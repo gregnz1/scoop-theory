@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8ea">
+  <meta name="description" content="Choose a current Gelato Messina flavour and build a better two- or three-scoop cup with an independent sensory pairing guide.">
+  <title>Scoop Theory - Unofficial Messina Pairing Guide</title>
+  <link rel="canonical" href="https://scoops.drtarr.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Scoop Theory">
+  <meta property="og:description" content="Build a better two- or three-scoop Messina cup.">
+  <meta property="og:url" content="https://scoops.drtarr.com/">
+  <meta property="og:image" content="https://scoops.drtarr.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Scoop Theory - an unofficial gelato pairing guide">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css?v=3">
+  <script src="app.js?v=3" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#calculator">Skip to the calculator</a>
+
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="Scoop Theory home">
+      <span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>SCOOP THEORY</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#calculator">Pair a cup</a>
+      <a href="#cabinet">The cabinet</a>
+      <a href="#method">How it works</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span><span id="rotation-label">Loading the current cabinet</span></p>
+        <h1 id="hero-title">One good scoop deserves <em>better company.</em></h1>
+        <p class="hero-lede">Choose one, two, or three Gelato Messina flavours. We will recommend the open slots, or explain whether the cup you built really works.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#calculator">Build my cup</a>
+          <button class="button button-quiet" type="button" id="hero-random">Surprise me</button>
+        </div>
+        <div class="cabinet-meta" aria-label="Cabinet information">
+          <span><strong id="flavour-count">40</strong> cabinet flavours</span>
+          <span><strong id="special-count">10</strong> monthly specials</span>
+          <span>Checked <strong id="checked-date">1 Aug 2026</strong></span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-scoop scoop-one"></div>
+        <div class="hero-scoop scoop-two"></div>
+        <div class="hero-scoop scoop-three"></div>
+        <div class="hero-cone"></div>
+        <span class="orbit orbit-one">acid</span>
+        <span class="orbit orbit-two">roast</span>
+        <span class="orbit orbit-three">cream</span>
+      </div>
+    </section>
+
+    <section class="calculator-section" id="calculator" aria-labelledby="calculator-title">
+      <div class="section-heading">
+        <p class="eyebrow">The combinator</p>
+        <h2 id="calculator-title">Start with the scoop you actually want.</h2>
+        <p>Choose every scoop yourself, or leave a slot open and let us complete the cup.</p>
+      </div>
+
+      <div class="calculator-shell">
+        <div class="calculator-controls">
+          <fieldset class="segmented-control" aria-label="Number of scoops">
+            <legend class="sr-only">Number of scoops</legend>
+            <button type="button" class="segment is-active" data-mode="2" aria-pressed="true">Two scoops</button>
+            <button type="button" class="segment" data-mode="3" aria-pressed="false">Three scoops</button>
+          </fieldset>
+
+          <div class="field-group">
+            <div class="field-label-row">
+              <label for="anchor-select" class="scoop-role-label"><span class="scoop-step">1</span><span><strong>Anchor</strong><small>Your first scoop - the flavour you came for</small></span></label>
+              <button class="text-button" type="button" id="random-anchor">Pick for me</button>
+            </div>
+            <select id="anchor-select" name="anchor">
+              <option value="">Choose a flavour</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label-row">
+              <label for="second-select" class="scoop-role-label"><span class="scoop-step">2</span><span><strong id="second-role-name">Partner</strong><small id="second-role-help">A bridge or lift for your anchor</small></span></label>
+            </div>
+            <select id="second-select" name="second">
+              <option value="">Recommend one for me</option>
+            </select>
+          </div>
+
+          <div class="field-group" id="third-field" hidden>
+            <div class="field-label-row">
+              <label for="third-select" class="scoop-role-label"><span class="scoop-step">3</span><span><strong>Lift</strong><small>Contrast that keeps the cup moving</small></span></label>
+            </div>
+            <select id="third-select" name="third">
+              <option value="">Recommend one for me</option>
+            </select>
+          </div>
+
+          <div class="builder-helper">
+            <p id="builder-hint">Leave the second scoop open to see ranked pairings.</p>
+            <button class="text-button clear-cup" type="button" id="clear-cup">Clear choices</button>
+          </div>
+
+          <div class="field-group">
+            <span class="field-label" id="style-label">Pairing style</span>
+            <div class="chip-row" id="style-options" role="group" aria-labelledby="style-label"></div>
+          </div>
+
+          <div class="anchor-summary" id="anchor-summary" aria-live="polite">
+            <div class="empty-scoop" aria-hidden="true">?</div>
+            <div>
+              <p class="mini-label">First scoop</p>
+              <h3>Choose from the cabinet</h3>
+              <p>Specials are marked in the list and refreshed each monthly rotation.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="calculator-results" id="results-panel">
+          <div class="results-header">
+            <div>
+              <p class="eyebrow">Best matches</p>
+              <h3 id="results-title">Your combinations will appear here.</h3>
+            </div>
+            <button class="icon-button" id="shuffle-results" type="button" aria-label="Shuffle recommendations" title="Shuffle recommendations" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+            </button>
+          </div>
+          <div id="recommendations" class="recommendations" aria-live="polite">
+            <div class="results-empty">
+              <div class="mini-stack" aria-hidden="true"><i></i><i></i><i></i></div>
+              <p>Pick a first scoop to see the strongest current pairings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="method-section" id="method" aria-labelledby="method-title">
+      <div class="section-heading compact">
+        <p class="eyebrow">The method</p>
+        <h2 id="method-title">A cup needs a point of view.</h2>
+      </div>
+      <div class="method-grid">
+        <article>
+          <span class="method-number">01</span>
+          <h3>Anchor</h3>
+          <p>The flavour you came for. Usually the richest, darkest, or most aromatic scoop in the cup.</p>
+        </article>
+        <article>
+          <span class="method-number">02</span>
+          <h3>Bridge</h3>
+          <p>A shared note - nut, cocoa, fruit, caramel, or cream - makes the combination feel intentional.</p>
+        </article>
+        <article>
+          <span class="method-number">03</span>
+          <h3>Lift</h3>
+          <p>Acid, fruit, bitterness, salt, or roast keeps cold sweetness from becoming flat and tiring.</p>
+        </article>
+      </div>
+      <div class="verdict-scale" aria-label="Combination verdict scale">
+        <span>Exceptional</span><span>Excellent</span><span>Strong</span><span>Good</span><span>Adventurous</span>
+      </div>
+      <p class="method-note">Every pair and trio uses the same five-step verdict scale. The engine weighs classic flavour affinities, shared aromas, richness, acidity, bitterness, and texture. It treats a pairing as sensory judgement, not mathematical fact.</p>
+    </section>
+
+    <section class="cabinet-section" id="cabinet" aria-labelledby="cabinet-title">
+      <div class="cabinet-heading">
+        <div class="section-heading compact">
+          <p class="eyebrow">Current cabinet</p>
+          <h2 id="cabinet-title">Every flavour, mapped.</h2>
+          <p>Tap any card to make it your first scoop.</p>
+        </div>
+        <div class="cabinet-tools">
+          <label class="search-field" for="cabinet-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+            <span class="sr-only">Search flavours</span>
+            <input id="cabinet-search" type="search" placeholder="Search flavours">
+          </label>
+          <div class="filter-row" id="cabinet-filters" role="group" aria-label="Filter cabinet">
+            <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="filter" data-filter="special" aria-pressed="false">Specials</button>
+            <button type="button" class="filter" data-filter="sorbet" aria-pressed="false">Sorbets</button>
+            <button type="button" class="filter" data-filter="creamy" aria-pressed="false">Creamy</button>
+          </div>
+        </div>
+      </div>
+      <div class="flavour-grid" id="flavour-grid" aria-live="polite"></div>
+      <p class="no-results" id="no-flavour-results" hidden>No cabinet flavours match that search.</p>
+    </section>
+
+    <section class="source-section" aria-labelledby="source-title">
+      <div>
+        <p class="eyebrow">Source and safety</p>
+        <h2 id="source-title">Flavour names are current. Pairing opinions are ours.</h2>
+      </div>
+      <div class="source-copy">
+        <p>Cabinet names and rotation dates are checked against Gelato Messina's official <a href="https://specials.gelatomessina.com/current-specials" target="_blank" rel="noopener">monthly specials</a> and <a href="https://gelatomessina.com/collections/classic-flavours" target="_blank" rel="noopener">classic flavour list</a>. Store stock can differ and specials can sell out.</p>
+        <p><strong>Do not use this guide for allergy decisions.</strong> Ingredients and cross-contact can change. Check the official allergen information and ask staff in store.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <span class="footer-wordmark">SCOOP THEORY</span>
+      <p>An independent, fan-made flavour pairing guide.</p>
+    </div>
+    <p>Not affiliated with, sponsored by, or endorsed by Gelato Messina. No logos or product photography are used.</p>
+    <a href="#top">Back to top</a>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><p class="noscript">Scoop Theory needs JavaScript to build combinations. The official cabinet links remain available below.</p></noscript>
+</body>
+</html>

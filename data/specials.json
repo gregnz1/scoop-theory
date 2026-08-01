@@ -1,0 +1,195 @@
+{
+  "source": {
+    "label": "Gelato Messina current specials",
+    "url": "https://specials.gelatomessina.com/current-specials",
+    "checkedAt": "2026-08-01"
+  },
+  "rotation": {
+    "label": "July 2026 specials",
+    "from": "2026-07-07",
+    "to": "2026-08-04"
+  },
+  "flavours": [
+    {
+      "id": "cheesecake-chill",
+      "sourceSlug": "cheesecake-and-chill",
+      "name": "Cheesecake and Chill",
+      "kind": "special",
+      "format": "gelato",
+      "family": "nut",
+      "note": "Peanut cheesecake richness, then caramel and cocoa-biscuit depth.",
+      "colour": "#d2a07a",
+      "profile": {"richness": 5, "brightness": 1, "sweetness": 5, "roast": 2},
+      "tags": ["peanut", "nut", "cheesecake", "caramel", "chocolate", "biscuit", "creamy"],
+      "pairs": [
+        {"id": "salted-coconut-mango", "why": "Salted tropical fruit lifts peanut cheesecake."},
+        {"id": "coconut-lychee", "why": "Floral coconut is a genuinely creamy bridge."},
+        {"id": "blood-orange", "why": "Sharp, bitter citrus resets the whole scoop."},
+        {"id": "coffee", "why": "Espresso counters caramel and echoes the biscuit."}
+      ]
+    },
+    {
+      "id": "chocolate-deluxe",
+      "sourceSlug": "chocolate-deluxe",
+      "name": "Chocolate Deluxe",
+      "kind": "special",
+      "format": "gelato",
+      "family": "chocolate",
+      "note": "A maximal dark-chocolate stack with fudge and cake weight.",
+      "colour": "#4f2f2d",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 4, "roast": 5},
+      "tags": ["dark chocolate", "chocolate", "fudge", "cake", "cocoa", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Essential bitter-citrus relief for maximum chocolate."},
+        {"id": "hazelnut", "why": "Roasted hazelnut bridges into the dark cocoa."},
+        {"id": "passionfruit", "why": "The strongest high-acid tropical contrast."},
+        {"id": "vanilla", "why": "A clean dairy contrast that keeps chocolate central."}
+      ]
+    },
+    {
+      "id": "fairy-bread",
+      "sourceSlug": "fairy-bread",
+      "name": "Fairy Bread",
+      "kind": "special",
+      "format": "gelato",
+      "family": "bakery",
+      "note": "Buttery toast and playful sugar crunch; nostalgic and moderately rich.",
+      "colour": "#ef9eb4",
+      "profile": {"richness": 3, "brightness": 0, "sweetness": 4, "roast": 2},
+      "tags": ["toast", "butter", "biscuit", "crunch", "creamy"],
+      "pairs": [
+        {"id": "strawberry", "why": "Fresh strawberry creates a jam-on-toast effect."},
+        {"id": "chocolate-fondant", "why": "Dark cocoa gives buttered toast more depth."},
+        {"id": "boysenberry", "why": "Tangy berry adds a softer jammy lift."},
+        {"id": "passionfruit", "why": "High-acid fruit stops nostalgia becoming too sweet."}
+      ]
+    },
+    {
+      "id": "friend-chip-goals",
+      "sourceSlug": "friend-chip-goals",
+      "name": "Friend Chip Goals",
+      "kind": "special",
+      "format": "gelato",
+      "family": "bakery",
+      "note": "Toasted cookie, milk chocolate and doughy butter richness.",
+      "colour": "#c4936a",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 5, "roast": 2},
+      "tags": ["cookie", "biscuit", "milk chocolate", "chocolate", "butter", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Citrus is the cleanest reset for cookie dough."},
+        {"id": "coffee", "why": "Roast and bitterness counter milk chocolate."},
+        {"id": "strawberry", "why": "Fresh berry lightens toasted cookie."},
+        {"id": "boysenberry", "why": "Yoghurt tang offers a softer berry contrast."}
+      ]
+    },
+    {
+      "id": "macadamia-praline-special",
+      "sourceSlug": "macadamia-praline",
+      "name": "Macadamia Praline",
+      "kind": "special",
+      "format": "gelato",
+      "family": "nut",
+      "note": "Mellow dairy cream layered with roasted macadamia and praline.",
+      "colour": "#dec08b",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 4, "roast": 3},
+      "tags": ["macadamia", "nut", "praline", "roast", "creamy"],
+      "pairs": [
+        {"id": "salted-coconut-mango", "why": "Salted mango lifts buttery macadamia."},
+        {"id": "mango", "why": "Clean fruit against creamy nut."},
+        {"id": "coffee", "why": "A roasted bridge with a drier finish."},
+        {"id": "blood-orange", "why": "Bitter citrus resets praline sweetness."}
+      ]
+    },
+    {
+      "id": "mango-pancake",
+      "sourceSlug": "mango-pancake",
+      "name": "Mango Pancake",
+      "kind": "special",
+      "format": "sherbet gelato",
+      "family": "tropical",
+      "note": "Ripe mango, soft cream and gentle pancake crunch.",
+      "colour": "#efac4f",
+      "profile": {"richness": 3, "brightness": 2, "sweetness": 4, "roast": 1},
+      "tags": ["mango", "fruit", "tropical", "cream", "pancake", "biscuit"],
+      "pairs": [
+        {"id": "pandan-coconut", "why": "A fragrant pandan-mango echo."},
+        {"id": "coconut-lychee", "why": "Creamy coconut and floral lychee extend the tropical side."},
+        {"id": "macadamia-praline-special", "why": "Roasted macadamia gives soft mango structure."},
+        {"id": "chocolate-sorbet", "why": "Lean dark cocoa is the strongest counterpoint."}
+      ]
+    },
+    {
+      "id": "super-choc-flan",
+      "sourceSlug": "super-choc-flan",
+      "name": "Super Choc Flan",
+      "kind": "special",
+      "format": "gelato",
+      "family": "custard",
+      "note": "Chocolate custard rounded with deep milk caramel.",
+      "colour": "#8b5541",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 5, "roast": 3},
+      "tags": ["chocolate", "custard", "dulce de leche", "caramel", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Bitter citrus resets chocolate custard and caramel."},
+        {"id": "coffee", "why": "Espresso bitterness gives the flan a drier finish."},
+        {"id": "hazelnut", "why": "A smooth roasted bridge into chocolate."},
+        {"id": "passionfruit", "why": "High-acid tropical fruit supplies maximum contrast."}
+      ]
+    },
+    {
+      "id": "super-dulce-tiramisu",
+      "sourceSlug": "super-dulce-tiramisu",
+      "name": "Super Dulce Tiramisu",
+      "kind": "special",
+      "format": "gelato",
+      "family": "custard",
+      "note": "Caramel-led tiramisu and soft biscuit - dense, creamy and lingering.",
+      "colour": "#b77d57",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 5, "roast": 2},
+      "tags": ["dulce de leche", "caramel", "tiramisu", "biscuit", "custard", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "A decisive citrus reset for caramel tiramisu."},
+        {"id": "hazelnut", "why": "Roasted nut links naturally to biscuit and caramel."},
+        {"id": "boysenberry", "why": "Tangy berry yoghurt lightens the custard."},
+        {"id": "chocolate-sorbet", "why": "Clean dark cocoa gives depth without more dairy."}
+      ]
+    },
+    {
+      "id": "maltster",
+      "sourceSlug": "the-maltster",
+      "name": "The Maltster",
+      "kind": "special",
+      "format": "gelato",
+      "family": "bakery",
+      "note": "Malted cocoa and cheesecake - dense, rounded and low-acid.",
+      "colour": "#aa765c",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 4, "roast": 3},
+      "tags": ["malt", "chocolate", "cheesecake", "biscuit", "creamy"],
+      "pairs": [
+        {"id": "coffee", "why": "Espresso extends malt and dries the finish."},
+        {"id": "blood-orange", "why": "Sharp citrus cuts dense malt cheesecake."},
+        {"id": "vanilla", "why": "A simple dairy bridge that keeps malt central."},
+        {"id": "chocolate-sorbet", "why": "Dark cocoa deepens malt without adding more cream."}
+      ]
+    },
+    {
+      "id": "twixed",
+      "sourceSlug": "twixed",
+      "name": "Twixed",
+      "kind": "special",
+      "format": "gelato",
+      "family": "bakery",
+      "note": "Milk chocolate, caramel and shortbread in a compact, very sweet scoop.",
+      "colour": "#c27f4f",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 5, "roast": 2},
+      "tags": ["milk chocolate", "chocolate", "caramel", "shortbread", "biscuit", "creamy"],
+      "pairs": [
+        {"id": "coffee", "why": "Espresso counters caramel and shortbread."},
+        {"id": "blood-orange", "why": "Citrus gives the strongest reset."},
+        {"id": "strawberry", "why": "Fresh berry adds a lighter dessert contrast."},
+        {"id": "hazelnut", "why": "A fully indulgent chocolate-nut bridge."}
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fff8ea"/>
+  <circle cx="1040" cy="50" r="280" fill="#f3d46a" opacity=".28"/>
+  <circle cx="80" cy="590" r="230" fill="#d74267" opacity=".12"/>
+  <text x="80" y="105" fill="#a9294b" font-family="Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="5">UNOFFICIAL FLAVOUR PAIRING GUIDE</text>
+  <text x="80" y="260" fill="#2c1e28" font-family="Georgia, serif" font-size="118" font-weight="700" letter-spacing="-7">Scoop Theory</text>
+  <text x="85" y="330" fill="#604e58" font-family="Arial, sans-serif" font-size="34">Build a better two- or three-scoop cup.</text>
+  <g transform="translate(760 200)" stroke="#2c1e28" stroke-width="6">
+    <circle cx="95" cy="170" r="102" fill="#d74267"/>
+    <circle cx="205" cy="90" r="102" fill="#b9cf8a"/>
+    <circle cx="270" cy="195" r="102" fill="#f3d46a"/>
+  </g>
+  <g transform="translate(80 492)">
+    <rect width="250" height="54" rx="27" fill="#2c1e28"/>
+    <text x="125" y="36" text-anchor="middle" fill="#fff8ea" font-family="Arial, sans-serif" font-size="21" font-weight="800">scoops.drtarr.com</text>
+  </g>
+</svg>

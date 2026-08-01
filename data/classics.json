@@ -1,0 +1,520 @@
+{
+  "source": {
+    "label": "Gelato Messina classic flavours",
+    "url": "https://gelatomessina.com/collections/classic-flavours",
+    "checkedAt": "2026-08-01"
+  },
+  "flavours": [
+    {
+      "id": "blood-orange",
+      "name": "Blood Orange Sorbet",
+      "kind": "classic",
+      "format": "sorbet",
+      "family": "bright",
+      "note": "Sharp citrus with a lightly bitter edge - a first-rate reset.",
+      "colour": "#e55e46",
+      "profile": {"richness": 1, "brightness": 5, "sweetness": 3, "roast": 0},
+      "tags": ["citrus", "fruit", "bitter", "fresh"],
+      "pairs": [
+        {"id": "chocolate-fondant", "why": "Bitter citrus makes dark chocolate taste even clearer."},
+        {"id": "pistachio-praline", "why": "A sharp citrus cut against creamy, roasted pistachio."},
+        {"id": "cheesecake-chill", "why": "The cleanest reset for peanut cheesecake and caramel."},
+        {"id": "vanilla", "why": "A simple orange-and-cream bridge."}
+      ]
+    },
+    {
+      "id": "bounty",
+      "name": "Bounty",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "tropical",
+      "note": "Coconut-led and chocolate-studded; rich, familiar and low-acid.",
+      "colour": "#d8e3bd",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 4, "roast": 1},
+      "tags": ["coconut", "chocolate", "creamy", "tropical"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Citrus pulls the coconut and chocolate back into focus."},
+        {"id": "mango", "why": "A natural coconut-mango echo with less dairy weight."},
+        {"id": "coffee", "why": "Espresso bitterness counters sweet coconut."},
+        {"id": "hazelnut", "why": "A deliberate chocolate, coconut and roasted-nut lane."}
+      ]
+    },
+    {
+      "id": "boysenberry",
+      "name": "Boysenberry",
+      "kind": "classic",
+      "format": "yoghurt gelato",
+      "family": "bright",
+      "note": "Tangy berry and yoghurt sit between fruit sorbet and cream.",
+      "colour": "#8e4f81",
+      "profile": {"richness": 3, "brightness": 3, "sweetness": 3, "roast": 0},
+      "tags": ["berry", "fruit", "tangy", "creamy", "yoghurt"],
+      "pairs": [
+        {"id": "pistachio-praline", "why": "Tangy berry lifts savoury-green pistachio."},
+        {"id": "white-choc-hazelnut", "why": "Berry acidity reins in sweet white-chocolate praline."},
+        {"id": "lemon", "why": "A bright, clean berry-citrus pairing."},
+        {"id": "vanilla", "why": "Vanilla softens the yoghurt tang without hiding it."}
+      ]
+    },
+    {
+      "id": "chocolate-chip",
+      "name": "Chocolate Chip",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "chocolate",
+      "note": "Gentle cocoa and crisp chocolate pieces rather than full dark intensity.",
+      "colour": "#b97858",
+      "profile": {"richness": 3, "brightness": 0, "sweetness": 3, "roast": 2},
+      "tags": ["chocolate", "cocoa", "creamy", "crunch"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Orange gives light cocoa a clean, classic contrast."},
+        {"id": "hazelnut", "why": "A gianduja-style bridge with extra texture."},
+        {"id": "coffee", "why": "Coffee turns gentle cocoa into a mocha pairing."},
+        {"id": "strawberries-cream", "why": "Soft berry fruit keeps the cocoa playful."}
+      ]
+    },
+    {
+      "id": "chocolate-fondant",
+      "name": "Chocolate Fondant",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "chocolate",
+      "note": "The cabinet's deepest, richest dark-chocolate anchor.",
+      "colour": "#5b342f",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 3, "roast": 4},
+      "tags": ["dark chocolate", "chocolate", "cocoa", "bitter", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Bitter citrus cuts the density and lengthens the cocoa."},
+        {"id": "hazelnut", "why": "Roasted hazelnut is the smoothest bridge into dark chocolate."},
+        {"id": "passionfruit", "why": "High-acid tropical fruit gives the strongest contrast."},
+        {"id": "coffee", "why": "A deep, adult echo of roast and bitterness."}
+      ]
+    },
+    {
+      "id": "chocolate-mint",
+      "name": "Chocolate Mint",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "chocolate",
+      "note": "Cooling mint keeps the chocolate clear and fresh.",
+      "colour": "#9ccab1",
+      "profile": {"richness": 3, "brightness": 2, "sweetness": 3, "roast": 2},
+      "tags": ["mint", "chocolate", "fresh", "creamy"],
+      "pairs": [
+        {"id": "chocolate-fondant", "why": "Fresh mint opens up a darker chocolate base."},
+        {"id": "vanilla", "why": "Vanilla rounds the mint without adding another idea."},
+        {"id": "strawberry", "why": "Bright strawberry makes mint-chocolate feel lighter."},
+        {"id": "bounty", "why": "Coconut links naturally to chocolate while mint supplies lift."}
+      ]
+    },
+    {
+      "id": "chocolate-sorbet",
+      "name": "Chocolate Sorbet",
+      "kind": "classic",
+      "format": "sorbet",
+      "family": "chocolate",
+      "note": "Dark cocoa intensity with less dairy weight and a cleaner finish.",
+      "colour": "#49312f",
+      "profile": {"richness": 4, "brightness": 1, "sweetness": 2, "roast": 5},
+      "tags": ["dark chocolate", "chocolate", "cocoa", "bitter", "clean"],
+      "pairs": [
+        {"id": "blood-orange", "why": "A clean, bitter chocolate-orange pairing."},
+        {"id": "salted-caramel", "why": "Dairy caramel softens the lean cocoa intensity."},
+        {"id": "hazelnut", "why": "Roasted nut supplies richness without extra sugar."},
+        {"id": "salted-coconut-mango", "why": "Salted tropical fruit is an unexpected, useful lift."}
+      ]
+    },
+    {
+      "id": "coconut-lychee",
+      "name": "Coconut & Lychee",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "tropical",
+      "note": "Creamy coconut with floral, perfumed lychee.",
+      "colour": "#d7e4d6",
+      "profile": {"richness": 3, "brightness": 1, "sweetness": 3, "roast": 0},
+      "tags": ["coconut", "lychee", "floral", "tropical", "creamy"],
+      "pairs": [
+        {"id": "salted-coconut-mango", "why": "The shared coconut note bridges creamy lychee to bright mango."},
+        {"id": "cheesecake-chill", "why": "Aromatic coconut gives peanut cheesecake a softer second voice."},
+        {"id": "passionfruit", "why": "Passionfruit adds the acid this floral scoop lacks."},
+        {"id": "white-choc-hazelnut", "why": "A lush, floral-praline pairing for an indulgent cup."}
+      ]
+    },
+    {
+      "id": "coffee",
+      "name": "Coffee",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "chocolate",
+      "note": "Espresso bitterness and roast, medium-bodied rather than dessert-heavy.",
+      "colour": "#9b684e",
+      "profile": {"richness": 3, "brightness": 1, "sweetness": 2, "roast": 5},
+      "tags": ["coffee", "espresso", "roast", "bitter", "creamy"],
+      "pairs": [
+        {"id": "hazelnut", "why": "Espresso and roasted hazelnut share a natural bridge."},
+        {"id": "macadamia-crunch", "why": "Roast and buttery nut balance each other."},
+        {"id": "salted-caramel", "why": "Coffee bitterness checks caramel sweetness."},
+        {"id": "blood-orange", "why": "Bitter citrus gives espresso a surprisingly clean finish."}
+      ]
+    },
+    {
+      "id": "cone-ception",
+      "name": "Cone-ception",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "bakery",
+      "note": "Waffle cone, crunch and chocolate - bakery-led but not as heavy as cookie dough.",
+      "colour": "#d5a46b",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 4, "roast": 2},
+      "tags": ["waffle", "biscuit", "chocolate", "crunch", "creamy"],
+      "pairs": [
+        {"id": "chocolate-fondant", "why": "Dark cocoa makes the cone-and-chocolate echo more grown-up."},
+        {"id": "strawberry", "why": "Fresh strawberry turns waffle cone into a sundae."},
+        {"id": "coffee", "why": "Roast gives sweet cone crunch some edge."},
+        {"id": "salted-caramel", "why": "A fully indulgent caramel-cone bridge."}
+      ]
+    },
+    {
+      "id": "cookies-cream",
+      "name": "Cookies & Cream",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "bakery",
+      "note": "Cocoa cookie comfort with medium chocolate weight.",
+      "colour": "#b5aaa5",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 4, "roast": 2},
+      "tags": ["cookie", "biscuit", "chocolate", "cocoa", "creamy"],
+      "pairs": [
+        {"id": "strawberry", "why": "Bright berry keeps cocoa cookie from feeling one-note."},
+        {"id": "coffee", "why": "Espresso supplies roast and a drier finish."},
+        {"id": "boysenberry", "why": "Yoghurt tang is the gentlest way to lift the cookie base."},
+        {"id": "salted-caramel", "why": "A deliberate salted-biscuit indulgence."}
+      ]
+    },
+    {
+      "id": "hazelnut",
+      "name": "Hazelnut",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "nut",
+      "note": "Roasted hazelnut, rounded dairy and little distraction.",
+      "colour": "#bd8a61",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 3, "roast": 4},
+      "tags": ["hazelnut", "nut", "roast", "creamy"],
+      "pairs": [
+        {"id": "chocolate-fondant", "why": "The classic dark-chocolate and hazelnut bridge."},
+        {"id": "coffee", "why": "Two complementary kinds of roast."},
+        {"id": "blood-orange", "why": "Citrus lifts hazelnut's buttery finish."},
+        {"id": "super-dulce", "why": "A rich caramel-nut echo for an indulgent cup."}
+      ]
+    },
+    {
+      "id": "hokey-pokey",
+      "name": "Hokey Pokey",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "bakery",
+      "note": "Honey and chocolate-coated honeycomb; crunchy, sweet and lightly toasted.",
+      "colour": "#e5b34e",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 5, "roast": 2},
+      "tags": ["honey", "caramel", "chocolate", "crunch", "creamy"],
+      "pairs": [
+        {"id": "boysenberry", "why": "Tangy yoghurt and berry cut honeycomb sweetness."},
+        {"id": "coffee", "why": "Espresso gives honey and chocolate a dry counterpoint."},
+        {"id": "lemon", "why": "A clean honey-lemon lift."},
+        {"id": "chocolate-fondant", "why": "Dark cocoa deepens the chocolate-coated crunch."}
+      ]
+    },
+    {
+      "id": "lemon",
+      "name": "Lemon Sorbet",
+      "kind": "classic",
+      "format": "sorbet",
+      "family": "bright",
+      "note": "The sharpest, cleanest lift in the cabinet.",
+      "colour": "#f2d458",
+      "profile": {"richness": 1, "brightness": 5, "sweetness": 2, "roast": 0},
+      "tags": ["citrus", "lemon", "fruit", "fresh", "acidic"],
+      "pairs": [
+        {"id": "pistachio-praline", "why": "Sharp lemon against creamy pistachio is a classic contrast."},
+        {"id": "vanilla", "why": "Vanilla rounds lemon into a clean cream bridge."},
+        {"id": "boysenberry", "why": "Two bright fruits, with yoghurt softening the edge."},
+        {"id": "coconut-lychee", "why": "Citrus gives floral coconut some needed definition."}
+      ]
+    },
+    {
+      "id": "macadamia-crunch",
+      "name": "Macadamia Crunch",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "nut",
+      "note": "Buttery macadamia, caramelised white chocolate and real crunch.",
+      "colour": "#e4c28d",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 4, "roast": 3},
+      "tags": ["macadamia", "nut", "white chocolate", "caramel", "crunch", "creamy"],
+      "pairs": [
+        {"id": "salted-coconut-mango", "why": "Salt and mango lift buttery macadamia."},
+        {"id": "coffee", "why": "Espresso cuts white-chocolate sweetness and echoes the roast."},
+        {"id": "blood-orange", "why": "Bitter citrus is a decisive reset."},
+        {"id": "chocolate-fondant", "why": "Dark cocoa contrasts white chocolate and macadamia."}
+      ]
+    },
+    {
+      "id": "mango",
+      "name": "Mango Sorbet",
+      "kind": "classic",
+      "format": "sorbet",
+      "family": "bright",
+      "note": "Lush tropical fruit without dairy weight.",
+      "colour": "#f2ad45",
+      "profile": {"richness": 1, "brightness": 3, "sweetness": 4, "roast": 0},
+      "tags": ["mango", "fruit", "tropical", "fresh"],
+      "pairs": [
+        {"id": "pandan-coconut", "why": "A fragrant South-East Asian tropical echo."},
+        {"id": "macadamia-praline-special", "why": "Creamy macadamia gives mango a roasted bridge."},
+        {"id": "bounty", "why": "Coconut and chocolate turn mango into a fuller dessert."},
+        {"id": "cheesecake-chill", "why": "Ripe fruit lifts peanut cheesecake and caramel."}
+      ]
+    },
+    {
+      "id": "messinatella",
+      "name": "Messinatella",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "chocolate",
+      "note": "Hazelnut-chocolate richness in the gianduja register.",
+      "colour": "#8b5944",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 4, "roast": 3},
+      "tags": ["chocolate", "hazelnut", "nut", "roast", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Orange is the cleanest counterpoint to gianduja."},
+        {"id": "coffee", "why": "Espresso extends the roasted hazelnut finish."},
+        {"id": "vanilla", "why": "A calm dairy contrast for a loud anchor."},
+        {"id": "strawberry", "why": "Fresh berry gives chocolate-hazelnut a bright edge."}
+      ]
+    },
+    {
+      "id": "milk-choc-peanut",
+      "name": "Milk Choc with Choc Peanut Fudge",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "chocolate",
+      "note": "Sweet milk chocolate and peanut fudge - maximal, salty-rich.",
+      "colour": "#9a6049",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 5, "roast": 3},
+      "tags": ["milk chocolate", "chocolate", "peanut", "nut", "fudge", "salty", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Sharp citrus prevents peanut fudge from becoming exhausting."},
+        {"id": "coffee", "why": "Roast and bitterness counter sweet milk chocolate."},
+        {"id": "strawberry", "why": "A peanut-butter-and-berry style contrast."},
+        {"id": "salted-coconut-mango", "why": "Tropical fruit and salt lift the dense fudge."}
+      ]
+    },
+    {
+      "id": "pandan-coconut",
+      "name": "Pandan & Coconut Sorbet",
+      "kind": "classic",
+      "format": "sorbet",
+      "family": "tropical",
+      "note": "Fragrant pandan and coconut with a surprisingly clean sorbet finish.",
+      "colour": "#9ec68f",
+      "profile": {"richness": 2, "brightness": 1, "sweetness": 3, "roast": 0},
+      "tags": ["pandan", "coconut", "aromatic", "tropical", "clean"],
+      "pairs": [
+        {"id": "mango-pancake", "why": "Mango and soft cream echo pandan-coconut naturally."},
+        {"id": "coconut-lychee", "why": "Shared coconut links clean sorbet to floral cream."},
+        {"id": "macadamia-praline-special", "why": "Roasted macadamia adds weight to the aromatic sorbet."},
+        {"id": "mango", "why": "A pure fragrant-fruit tropical pairing."}
+      ]
+    },
+    {
+      "id": "passionfruit",
+      "name": "Passionfruit Sorbet",
+      "kind": "classic",
+      "format": "sorbet",
+      "family": "bright",
+      "note": "High-acid tropical fruit that cuts straight through praline and caramel.",
+      "colour": "#e8b52d",
+      "profile": {"richness": 1, "brightness": 5, "sweetness": 3, "roast": 0},
+      "tags": ["passionfruit", "fruit", "tropical", "acidic", "fresh"],
+      "pairs": [
+        {"id": "vanilla", "why": "The clean passionfruit-and-cream classic."},
+        {"id": "white-choc-hazelnut", "why": "Acid cuts sweet white chocolate and praline."},
+        {"id": "cheesecake-chill", "why": "Passionfruit gives peanut cheesecake a decisive lift."},
+        {"id": "coconut-lychee", "why": "Floral coconut bridges into high-acid tropical fruit."}
+      ]
+    },
+    {
+      "id": "pistachio-praline",
+      "name": "Pistachio Praline",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "nut",
+      "note": "Green, roasted pistachio with creamy praline sweetness.",
+      "colour": "#a8bd73",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 4, "roast": 3},
+      "tags": ["pistachio", "nut", "praline", "roast", "white chocolate", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Bitter citrus cuts praline and flatters pistachio."},
+        {"id": "lemon", "why": "A sharper citrus-nut contrast."},
+        {"id": "boysenberry", "why": "Tangy berry and yoghurt lift roasted pistachio."},
+        {"id": "chocolate-fondant", "why": "Dark cocoa gives pistachio a classic bridge."}
+      ]
+    },
+    {
+      "id": "rum-raisin",
+      "name": "Rum & Raisin",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "custard",
+      "note": "Warm spirit, dried fruit and custard-like depth.",
+      "colour": "#aa725a",
+      "profile": {"richness": 4, "brightness": 1, "sweetness": 4, "roast": 1},
+      "tags": ["rum", "boozy", "raisin", "dried fruit", "custard", "creamy"],
+      "pairs": [
+        {"id": "vanilla", "why": "Vanilla gives rum and raisin a clean custard bridge."},
+        {"id": "coffee", "why": "Espresso bitterness counters dried-fruit sweetness."},
+        {"id": "chocolate-fondant", "why": "Dark cocoa deepens the warm spirit notes."},
+        {"id": "blood-orange", "why": "Bitter citrus freshens the long rum finish."}
+      ]
+    },
+    {
+      "id": "salted-caramel",
+      "name": "Salted Caramel and White Chocolate",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "custard",
+      "note": "Very rich caramel with salt and white-chocolate sweetness.",
+      "colour": "#d39a55",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 5, "roast": 2},
+      "tags": ["caramel", "salt", "salty", "white chocolate", "creamy"],
+      "pairs": [
+        {"id": "blood-orange", "why": "Bitter citrus resets salted caramel."},
+        {"id": "coffee", "why": "Espresso bitterness makes the caramel less cloying."},
+        {"id": "chocolate-sorbet", "why": "Lean dark cocoa supplies contrast without extra dairy."},
+        {"id": "boysenberry", "why": "Tangy berry yoghurt is a softer lift."}
+      ]
+    },
+    {
+      "id": "salted-coconut-mango",
+      "name": "Salted Coconut & Mango Sorbet",
+      "kind": "classic",
+      "format": "sorbet",
+      "family": "tropical",
+      "note": "Salty coconut, ripe mango and enough acidity to lift rich partners.",
+      "colour": "#f0b856",
+      "profile": {"richness": 2, "brightness": 3, "sweetness": 3, "roast": 0},
+      "tags": ["coconut", "mango", "fruit", "tropical", "salt", "salty", "fresh"],
+      "pairs": [
+        {"id": "cheesecake-chill", "why": "Salted tropical fruit lifts peanut cheesecake."},
+        {"id": "coconut-lychee", "why": "Shared coconut bridges sorbet to floral cream."},
+        {"id": "macadamia-praline-special", "why": "Salt, mango and roasted macadamia form a complete bridge."},
+        {"id": "chocolate-sorbet", "why": "A dark tropical contrast without dairy overload."}
+      ]
+    },
+    {
+      "id": "strawberries-cream",
+      "name": "Strawberries & Cream",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "bright",
+      "note": "Soft berry, vanilla and jammy sweetness.",
+      "colour": "#ee9aa3",
+      "profile": {"richness": 3, "brightness": 2, "sweetness": 4, "roast": 0},
+      "tags": ["strawberry", "berry", "fruit", "vanilla", "jam", "creamy"],
+      "pairs": [
+        {"id": "chocolate-fondant", "why": "Creamy berry softens dark cocoa."},
+        {"id": "pistachio-praline", "why": "Berry fruit and green pistachio make a natural bridge."},
+        {"id": "lemon", "why": "Lemon pulls jammy strawberry back toward fresh fruit."},
+        {"id": "cone-ception", "why": "Waffle cone turns it into a complete strawberry sundae."}
+      ]
+    },
+    {
+      "id": "strawberry",
+      "name": "Strawberry Sorbet",
+      "kind": "classic",
+      "format": "sorbet",
+      "family": "bright",
+      "note": "Clean berry fruit with brighter acidity than the creamy version.",
+      "colour": "#e86670",
+      "profile": {"richness": 1, "brightness": 4, "sweetness": 3, "roast": 0},
+      "tags": ["strawberry", "berry", "fruit", "fresh", "acidic"],
+      "pairs": [
+        {"id": "chocolate-fondant", "why": "Fresh strawberry gives dark chocolate a clean fruit edge."},
+        {"id": "vanilla", "why": "The clearest berry-and-cream pairing."},
+        {"id": "pistachio-praline", "why": "Berry acidity lifts sweet pistachio praline."},
+        {"id": "chocolate-mint", "why": "Fresh fruit and mint keep chocolate light."}
+      ]
+    },
+    {
+      "id": "super-dulce",
+      "name": "Super Dulce de Leche",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "custard",
+      "note": "Pure milk-caramel saturation - sweet, dense and lingering.",
+      "colour": "#c7834f",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 5, "roast": 2},
+      "tags": ["dulce de leche", "caramel", "milk", "creamy"],
+      "pairs": [
+        {"id": "coffee", "why": "Espresso is the most direct counterweight to milk caramel."},
+        {"id": "blood-orange", "why": "Bitter citrus gives dulce a hard reset."},
+        {"id": "chocolate-sorbet", "why": "Lean dark cocoa prevents dairy overload."},
+        {"id": "boysenberry", "why": "Tangy berry yoghurt supplies a gentler contrast."}
+      ]
+    },
+    {
+      "id": "tiramisu",
+      "name": "Tiramisu",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "custard",
+      "note": "Mascarpone, coffee, Marsala and biscuit in one rounded scoop.",
+      "colour": "#b88b69",
+      "profile": {"richness": 4, "brightness": 0, "sweetness": 4, "roast": 3},
+      "tags": ["coffee", "mascarpone", "custard", "biscuit", "boozy", "creamy"],
+      "pairs": [
+        {"id": "hazelnut", "why": "Roasted hazelnut extends tiramisu's coffee notes."},
+        {"id": "blood-orange", "why": "Bitter orange cuts mascarpone and biscuit."},
+        {"id": "vanilla", "why": "A calm custard bridge."},
+        {"id": "chocolate-sorbet", "why": "Clean dark cocoa deepens the coffee without extra cream."}
+      ]
+    },
+    {
+      "id": "vanilla",
+      "name": "Vanilla",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "custard",
+      "note": "A calm dairy bridge that lets a louder partner stay legible.",
+      "colour": "#efe1b7",
+      "profile": {"richness": 3, "brightness": 0, "sweetness": 3, "roast": 0},
+      "tags": ["vanilla", "custard", "milk", "creamy", "neutral"],
+      "pairs": [
+        {"id": "blood-orange", "why": "A clean orange-and-cream contrast."},
+        {"id": "chocolate-fondant", "why": "Vanilla makes dark chocolate feel even darker."},
+        {"id": "passionfruit", "why": "High-acid tropical fruit gains a soft dairy bridge."},
+        {"id": "rum-raisin", "why": "Vanilla rounds the spirit and dried fruit."}
+      ]
+    },
+    {
+      "id": "white-choc-hazelnut",
+      "name": "White Chocolate Hazelnut",
+      "kind": "classic",
+      "format": "gelato",
+      "family": "nut",
+      "note": "Sweet white chocolate softened by roasted hazelnut.",
+      "colour": "#d8c59c",
+      "profile": {"richness": 5, "brightness": 0, "sweetness": 5, "roast": 3},
+      "tags": ["white chocolate", "hazelnut", "nut", "praline", "roast", "creamy"],
+      "pairs": [
+        {"id": "passionfruit", "why": "High acidity cuts sweet praline decisively."},
+        {"id": "boysenberry", "why": "Tangy berry yoghurt supplies fruit and dairy contrast."},
+        {"id": "coffee", "why": "Espresso adds bitterness and extends the hazelnut."},
+        {"id": "blood-orange", "why": "Bitter citrus resets white chocolate."}
+      ]
+    }
+  ]
+}
+

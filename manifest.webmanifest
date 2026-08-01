@@ -1,0 +1,13 @@
+{
+  "name": "Scoop Theory",
+  "short_name": "Scoops",
+  "description": "An unofficial Messina flavour pairing guide.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff8ea",
+  "theme_color": "#fff8ea",
+  "icons": [
+    {"src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ]
+}
+
