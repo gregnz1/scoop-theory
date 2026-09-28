@@ -14,3 +14,9 @@ Live at [scoops.drtarr.com](https://scoops.drtarr.com/).
 Flavour names and rotation dates are checked against Gelato Messina's official listings. Pairing profiles, scoring, and explanations are original. This project is not affiliated with, sponsored by, or endorsed by Gelato Messina. Do not use it for allergy decisions.
 
 No licence has been granted for reuse beyond the rights automatically provided by GitHub's Terms of Service.
+
+## Artwork
+
+All illustration is drawn in code - no photography and no Messina branding. `scripts/draw_art.py` (Python standard library only) writes the SVGs: the hero, the header mark, `favicon.svg`, one scoop per flavour family for the result and cabinet cards, the small tub pieces and `og-image.svg`. Re-run it after changing the drawing code.
+
+`scripts/render_png.py` renders `og-image.png`, `apple-touch-icon.png` and the manifest icons from those SVGs with Playwright. On a Mac the social card is set in Iowan Old Style; elsewhere pass `--serif`, `--serif-italic` and `--sans` font files so it is not set in a fallback face.
