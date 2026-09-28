@@ -223,6 +223,13 @@ def tub(dr, cx, top, wt, wb, h, light=False, shadow=None):
     return out
 
 
+def tub_back(cx, top, wt, h, light=False):
+    """The far inside wall of the tub, drawn behind the scoops."""
+    fill = "#e8d9bf" if light else "#1d1219"
+    L = cx - wt / 2 - wt * 0.02
+    return f'<rect x="{n(L)}" y="{n(top - h * 0.13)}" width="{n(wt * 1.04)}" height="{n(h * 0.2)}" rx="{n(h * 0.1)}" fill="{fill}"/>'
+
+
 def flag(px, py, tx, ty, text, side, fill=PAPER, pick=INK, size=17):
     """A toothpick flag pushed into a scoop at (px, py)."""
     w = len(text) * size * 0.5 + size * 1.3
@@ -253,26 +260,29 @@ def filters(dr):
 def cup_of_three(dr, light_tub=False, flags=True):
     """Anchor, bridge and lift in a tub - the hero and social-card drawing (500 x 500 units)."""
     filters(dr)
+    top, wt, wb, h = 330, 340, 262, 140
+    # Scoops sit low enough that the tub's front hides their bases, and stay inside the rim.
     scoops = "".join(scoop(dr, cx, cy, r, c, sd, kind, shadow="soft") for cx, cy, r, c, sd, kind in [
-        (254, 206, 94, LEMON, 5, "zest"),
-        (334, 300, 92, PIST, 8, "shards"),
-        (172, 298, 98, ROSE, 3, "seeds"),
+        (250, 218, 88, LEMON, 5, "zest"),
+        (330, 302, 84, PIST, 8, "shards"),
+        (172, 300, 88, ROSE, 3, "seeds"),
     ])
-    pot = tub(dr, 252, 348, 318, 250, 128, light=light_tub, shadow="soft")
-    out = f'<g filter="url(#grain)">{scoops}{"" if light_tub else pot}</g>' + (pot if light_tub else "")
+    back = tub_back(250, top, wt, h, light=light_tub)
+    pot = tub(dr, 250, top, wt, wb, h, light=light_tub, shadow="soft")
+    out = f'<g filter="url(#grain)">{back}{scoops}{"" if light_tub else pot}</g>' + (pot if light_tub else "")
     if flags:
         fill, pick = (LEMON, CREAM) if light_tub else (PAPER, INK)
-        out += flag(270, 140, 296, 48, "lift", 1, fill, pick)
-        out += flag(140, 244, 104, 150, "anchor", -1, fill, pick)
-        out += flag(372, 244, 404, 160, "bridge", 1, fill, pick)
+        out += flag(262, 156, 292, 52, "lift", 1, fill, pick)
+        out += flag(146, 262, 104, 164, "anchor", -1, fill, pick)
+        out += flag(356, 262, 400, 172, "bridge", 1, fill, pick)
     return out
 
 
 def mark_body(dr):
     """The three-scoop tub at 64 x 64 units."""
     out = "".join(scoop(dr, cx, cy, r, c, sd, "none", detail=1) for cx, cy, r, c, sd in [
-        (32, 22.5, 13, LEMON, 5), (43, 31.5, 13, MINT, 8), (21, 31.5, 13.5, ROSE, 3)])
-    return out + tub(dr, 32, 38, 48, 37, 18)
+        (32, 21, 12, LEMON, 5), (43, 30.5, 12, MINT, 8), (21, 30.5, 12.5, ROSE, 3)])
+    return out + tub(dr, 32, 34, 54, 42, 20)
 
 
 # ---------------------------------------------------------------- files
