@@ -11,8 +11,8 @@ Static site on GitHub Pages from `main` of `gregnz1/scoop-theory`; merging to `m
 
 ## Weekly specials update
 
-1. **Mondays 5:17 am Brisbane - GitHub Actions** (`.github/workflows/refresh-specials.yml`) runs `scripts/refresh_specials.py` against https://specials.gelatomessina.com/current-specials. If the list changed, it commits to a `specials/<start date>` branch and opens a pull request titled like "October 2026 specials". Continuing flavours keep their entries untouched; new ones get rule-based placeholders marked `"needsReview": true`, and their stated components go in `.github/specials-report.json`.
-2. **Mondays ~7:50 am - Claude scheduled task** writes up the new flavours on that branch (below).
+1. **Mondays and Thursdays 5:17 am Brisbane - GitHub Actions** (`.github/workflows/refresh-specials.yml`) runs `scripts/refresh_specials.py` against https://specials.gelatomessina.com/current-specials. If the list changed, it commits to a `specials/<start date>` branch and opens a pull request titled like "October 2026 specials". Continuing flavours keep their entries untouched; new ones get rule-based placeholders marked `"needsReview": true`, and their stated components go in `.github/specials-report.json`.
+2. **Mondays and Thursdays 7:48 am - Claude scheduled task** ("Scoop Theory specials write-up") writes up the new flavours on that branch (below).
 3. **Greg merges** the pull request. Nothing goes live before that.
 
 ## Writing up new specials

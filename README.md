@@ -13,7 +13,7 @@ Live at [scoops.drtarr.com](https://scoops.drtarr.com/).
 
 ## Keeping the specials current
 
-Every Monday at 5:17 am (Brisbane), GitHub Actions checks Messina's current-specials page (`.github/workflows/refresh-specials.yml`). When the list has changed it opens a pull request with the new rotation: flavours still in the cabinet keep their write-ups, and new ones get placeholders. A Claude scheduled task then writes up the new flavours on that pull request (see `CLAUDE.md`), and merging it publishes the update. To check straight away, open the repo's **Actions** tab, choose **Refresh specials** and press **Run workflow**.
+Every Monday and Thursday at 5:17 am (Brisbane), GitHub Actions checks Messina's current-specials page (`.github/workflows/refresh-specials.yml`). When the list has changed it opens a pull request with the new rotation: flavours still in the cabinet keep their write-ups, and new ones get placeholders. A Claude scheduled task then writes up the new flavours on that pull request (see `CLAUDE.md`), and merging it publishes the update. To check straight away, open the repo's **Actions** tab, choose **Refresh specials** and press **Run workflow**.
 
 Flavour names and rotation dates are checked against Gelato Messina's official listings. Pairing profiles, scoring, and explanations are original. This project is not affiliated with, sponsored by, or endorsed by Gelato Messina. Do not use it for allergy decisions.
 
