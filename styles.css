@@ -334,24 +334,6 @@ select option, select optgroup { color: #191117; background: #fff; }
   font-size: 1.5rem;
 }
 .summary-scoop { width: 70px; height: 70px; }
-.summary-stack { position: relative; width: 72px; height: 66px; }
-.summary-stack::after {
-  position: absolute;
-  z-index: 4;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 24px;
-  background: url("art/tub-light.svg") center / contain no-repeat;
-  content: "";
-}
-.summary-stack span { position: absolute; top: 21px; width: 36px; height: 36px; }
-.summary-stack span:nth-child(1) { z-index: 3; left: 3px; }
-.summary-stack span:nth-child(2) { z-index: 2; right: 3px; }
-.summary-stack span:nth-child(3) { z-index: 1; top: 8px; left: 18px; }
-.summary-stack.two span { top: 19px; width: 38px; height: 38px; }
-.summary-stack.two span:nth-child(1) { left: 0; }
-.summary-stack.two span:nth-child(2) { right: 0; }
 /* One drawn scoop per flavour family; the inclusions tell families apart without relying on colour. */
 .flavour-colour-bright { background: url("art/scoop-bright.svg") center / contain no-repeat; }
 .flavour-colour-tropical { background: url("art/scoop-tropical.svg") center / contain no-repeat; }
@@ -427,25 +409,31 @@ select option, select optgroup { color: #191117; background: #fff; }
 .completion-heading .eyebrow { margin-bottom: 6px; color: var(--rose-dark); }
 .completion-heading h4 { margin: 0; font-family: var(--serif); font-size: 1.55rem; line-height: 1.1; }
 .completion-heading > p:last-child { margin: 7px 0 0; color: var(--ink-soft); font-size: 0.79rem; }
-.cup-visual { position: relative; width: 110px; height: 84px; }
-.cup-visual::after {
+/* Small cups: back wall, scoops, then the tub front, all placed in percentages so the cup scales as one piece.
+   Each scoop image is a 100-unit square with the scoop centred (r = 42); the tub art is a 90 x 46 frame.
+   Scoops sit low enough that the rim hides their lower half, and stay inside the rim's width. */
+.cup-visual, .summary-stack { position: relative; width: 110px; aspect-ratio: 110 / 84; }
+.summary-stack { width: 72px; }
+.cup-visual::before, .cup-visual::after, .summary-stack::before, .summary-stack::after {
   position: absolute;
-  z-index: 4;
-  left: 6px;
-  right: 6px;
-  bottom: 1px;
-  height: 33px;
-  background: url("art/tub.svg") center / contain no-repeat;
+  left: 6.36%;
+  right: 6.36%;
+  bottom: 0;
+  height: 58.4%;
+  background: center / contain no-repeat;
   content: "";
 }
-/* Each scoop image is a 100-unit square with the scoop centred, r = 42; placements keep every scoop inside the rim. */
-.cup-scoop { position: absolute; top: 21px; width: 48px; height: 48px; }
-.cup-scoop:nth-child(1) { z-index: 3; left: 11px; }
-.cup-scoop:nth-child(2) { z-index: 2; right: 11px; }
-.cup-scoop:nth-child(3) { z-index: 1; top: 5px; left: 31px; }
-.cup-visual.two .cup-scoop { top: 18px; width: 52px; height: 52px; }
-.cup-visual.two .cup-scoop:nth-child(1) { left: 8px; }
-.cup-visual.two .cup-scoop:nth-child(2) { right: 8px; }
+.cup-visual::before { z-index: 0; background-image: url("art/tub-back.svg"); }
+.cup-visual::after { z-index: 4; background-image: url("art/tub.svg"); }
+.summary-stack::before { z-index: 0; background-image: url("art/tub-back-light.svg"); }
+.summary-stack::after { z-index: 4; background-image: url("art/tub-light.svg"); }
+.cup-scoop, .summary-stack span { position: absolute; top: 18.2%; width: 41.8%; height: 54.8%; }
+.cup-scoop:nth-child(1), .summary-stack span:nth-child(1) { z-index: 3; left: 11.8%; }
+.cup-scoop:nth-child(2), .summary-stack span:nth-child(2) { z-index: 2; right: 11.8%; }
+.cup-scoop:nth-child(3), .summary-stack span:nth-child(3) { z-index: 1; top: 1.2%; left: 29.1%; }
+.cup-visual.two .cup-scoop, .summary-stack.two span { top: 13.4%; width: 47.3%; height: 61.9%; }
+.cup-visual.two .cup-scoop:nth-child(1), .summary-stack.two span:nth-child(1) { left: 8.5%; }
+.cup-visual.two .cup-scoop:nth-child(2), .summary-stack.two span:nth-child(2) { right: 8.5%; }
 .recommendation-rank { margin: 0 0 3px; color: var(--rose-dark); font-size: 0.65rem; font-weight: 900; letter-spacing: 0.11em; text-transform: uppercase; }
 .recommendation-card h4 { margin: 0; font-family: var(--serif); font-size: 1.2rem; line-height: 1.14; }
 .recommendation-card .reason { margin: 5px 0 0; color: var(--ink-soft); font-size: 0.82rem; }
@@ -639,7 +627,7 @@ select option, select optgroup { color: #191117; background: #fff; }
   .calculator-shell { border-radius: 22px; }
   .calculator-controls, .calculator-results { padding: 22px 16px; }
   .recommendation-card, .assessment-card { grid-template-columns: 82px minmax(0, 1fr); gap: 12px; }
-  .cup-visual { width: 80px; transform: scale(0.76); transform-origin: left center; }
+  .cup-visual { width: 82px; }
   .card-actions { grid-column: 2; display: flex; flex-wrap: wrap; justify-content: flex-start; }
   .assessment-card > .share-button { grid-column: 2; justify-self: start; }
   .card-actions .share-button { grid-column: auto; }
