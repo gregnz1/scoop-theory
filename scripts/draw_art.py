@@ -11,7 +11,8 @@ Writes:
     art/mark.svg                 three-scoop tub mark, no background
     art/app-icon.svg             square cream icon used to render the PNG icons
     art/scoop-<family>.svg       one scoop per flavour family, for the UI
-    art/tub.svg, art/tub-light.svg   the tub for small cup drawings (cream and dark panels)
+    art/tub.svg, art/tub-light.svg   front of the small tub (cream and dark panels)
+    art/tub-back.svg, art/tub-back-light.svg   its inside back wall, drawn behind the scoops
     favicon.svg                  mark on a cream rounded tile
     og-image.svg                 1200 x 630 social card source
 
@@ -313,9 +314,16 @@ def family_scoop(family):
     return dr.svg(100, 100, scoop(dr, 50, 50, 42, colour, 13, kind))
 
 
+# The small cup in the result cards and summary is layered in CSS: back wall, scoops, then the tub front.
+# Both halves share this 90 x 46 frame so they line up; styles.css places the scoops against it.
 def small_tub(light):
     dr = Drawing("t")
-    return dr.svg(90, 30, tub(dr, 45, 3, 82, 64, 25, light=light))
+    return dr.svg(90, 46, tub(dr, 45, 6, 80, 62, 38, light=light))
+
+
+def small_tub_back(light):
+    dr = Drawing("b")
+    return dr.svg(90, 46, tub_back(45, 6, 80, 38, light=light))
 
 
 def og_card():
@@ -340,6 +348,8 @@ def main():
         art / "app-icon.svg": app_icon(),
         art / "tub.svg": small_tub(False),
         art / "tub-light.svg": small_tub(True),
+        art / "tub-back.svg": small_tub_back(False),
+        art / "tub-back-light.svg": small_tub_back(True),
         ROOT / "favicon.svg": favicon(),
         ROOT / "og-image.svg": og_card(),
     }
