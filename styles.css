@@ -181,7 +181,7 @@ svg { display: block; }
 }
 
 .hero-art { position: relative; width: 100%; max-width: 520px; margin-left: auto; }
-.hero-art picture, .hero-art img { display: block; width: 100%; height: auto; }
+.hero-art svg { display: block; width: 100%; height: auto; aspect-ratio: 1; }
 
 .calculator-section, .cabinet-section { padding: calc(102px + var(--fade-depth)) max(20px, calc((100vw - 1180px) / 2)) 102px; }
 .calculator-section {

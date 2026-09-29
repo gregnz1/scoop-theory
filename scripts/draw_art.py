@@ -7,8 +7,9 @@ identical files unless the drawing code below changes.
     python3 scripts/draw_art.py
 
 Writes:
-    art/hero.svg                 hero illustration (500 x 500), animated: tub, then scoops, then flags
-    art/hero-static.svg          the same drawing without motion, for people who turn animation off
+    art/hero.svg                 hero illustration (500 x 500), animated: tub, then scoops, then flags;
+                                 the same drawing is also written into index.html between the
+                                 hero-art markers, so the page can replay it (see hero.js)
     art/mark.svg                 three-scoop tub mark, no background
     art/app-icon.svg             square cream icon used to render the PNG icons
     art/scoop-<family>.svg       one scoop per flavour family, for the UI
@@ -181,8 +182,10 @@ class Drawing:
         self.count += 1
         return f"{self.prefix}{kind}{self.count}"
 
-    def svg(self, w, h, body, label=None):
+    def svg(self, w, h, body, label=None, cls=None):
         head = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {n(w)} {n(h)}" width="{n(w)}" height="{n(h)}"'
+        if cls:
+            head += f' class="{cls}"'
         head += f' role="img" aria-label="{label}">' if label else ' aria-hidden="true">'
         defs = f"<defs>{''.join(self.defs)}</defs>" if self.defs else ""
         return head + defs + body + "</svg>\n"
@@ -236,7 +239,7 @@ def scoop(dr, cx, cy, r, colour, seed, kind, shadow=None, detail=2, speckle=Fals
             out += f'<path d="{spline(outer, closed=False)}L{n(inner[0][0])},{n(inner[0][1])} {spline(inner, closed=False)[1:]}Z" fill="{tint(colour, 0.32)}"/>'
     out += bits(kind, cx, cy, r, colour, seed)
     if speckle:
-        out += f'<rect x="{n(cx - r * 1.2)}" y="{n(cy - r * 1.2)}" width="{n(r * 2.4)}" height="{n(r * 2.4)}" fill="url(#speckle)"/>'
+        out += f'<rect x="{n(cx - r * 1.2)}" y="{n(cy - r * 1.2)}" width="{n(r * 2.4)}" height="{n(r * 2.4)}" fill="url(#{dr.prefix}speckle)"/>'
     out += "</g>"
     return f'<g class="{cls}">{out}</g>' if cls else out
 
@@ -259,7 +262,7 @@ def tub(dr, cx, top, wt, wb, h, light=False, shadow=None, speckle=False):
     out += (f'<use href="#{tid}" fill="{body_col}"/><g clip-path="url(#{cid})">'
             f'<path d="M{n(L - 10)},{n(by)}Q{n(cx)},{n(by + bh * 0.9)} {n(R + 10)},{n(by)}L{n(R + 10)},{n(by + bh)}Q{n(cx)},{n(by + bh * 1.9)} {n(L - 10)},{n(by + bh)}Z" fill="{band_col}"/>'
             f'<path d="M{n(cx + wt * 0.18)},{n(top)}L{n(R + 5)},{n(top)}L{n(br)},{n(top + h)}L{n(cx + wb * 0.22)},{n(top + h)}Z" fill="{INK}" opacity="{".18" if not light else ".1"}"/>'
-            + (f'<rect x="{n(L - 10)}" y="{n(top - 10)}" width="{n(wt + 20)}" height="{n(h + 20)}" fill="url(#speckle)"/>' if speckle else "")
+            + (f'<rect x="{n(L - 10)}" y="{n(top - 10)}" width="{n(wt + 20)}" height="{n(h + 20)}" fill="url(#{dr.prefix}speckle)"/>' if speckle else "")
             + '</g>')
     out += f'<rect x="{n(L - wt * 0.03)}" y="{n(top - h * 0.05)}" width="{n(wt * 1.06)}" height="{n(h * 0.15)}" rx="{n(h * 0.075)}" fill="{rim_col}"/>'
     return out
@@ -289,30 +292,30 @@ def flag(x, base, top, text, side, fill=INK, ink=CREAM, pick=INK, size=18, cls="
 
 
 def filters(dr):
-    dr.defs.append('<filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.5"/></filter>')
-    dr.defs.append(speckle_pattern())
+    dr.defs.append(f'<filter id="{dr.prefix}soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.5"/></filter>')
+    dr.defs.append(speckle_pattern(f"{dr.prefix}speckle"))
 
 
 # The hero arrives in order: the tub rises into place, the three scoops drop into it one at a
 # time (anchor, bridge, lift), then the flags go in. It plays once and is off for anyone who has
 # asked their device to reduce motion.
 HERO_MOTION = """
-.tub{animation:tub .7s cubic-bezier(.2,.8,.3,1.12) both}
-.scoop{transform-box:fill-box;transform-origin:50% 88%;animation:drop .8s both}
-.s-anchor{animation-delay:.45s}.s-bridge{animation-delay:.65s}.s-lift{animation-delay:.85s}
-.flag .pick{animation:pick .28s cubic-bezier(.3,.7,.4,1) both}
-.flag .banner{animation:banner .32s cubic-bezier(.3,.8,.4,1.25) both}
-.f-anchor .pick{animation-delay:1.55s}.f-anchor .banner{animation-delay:1.72s}
-.f-bridge .pick{animation-delay:1.68s}.f-bridge .banner{animation-delay:1.85s}
-.f-lift .pick{animation-delay:1.81s}.f-lift .banner{animation-delay:1.98s}
-@keyframes tub{from{transform:translateY(170px);opacity:0}40%{opacity:1}to{transform:none;opacity:1}}
-@keyframes drop{0%{transform:translateY(-460px);opacity:0;animation-timing-function:cubic-bezier(.5,0,.9,.6)}
+.hero-cup .tub{animation:hero-tub .7s cubic-bezier(.2,.8,.3,1.12) both}
+.hero-cup .scoop{transform-box:fill-box;transform-origin:50% 88%;animation:hero-drop .8s both}
+.hero-cup .s-anchor{animation-delay:.45s}.hero-cup .s-bridge{animation-delay:.65s}.hero-cup .s-lift{animation-delay:.85s}
+.hero-cup .pick{animation:hero-pick .28s cubic-bezier(.3,.7,.4,1) both}
+.hero-cup .banner{animation:hero-banner .32s cubic-bezier(.3,.8,.4,1.25) both}
+.hero-cup .f-anchor .pick{animation-delay:1.55s}.hero-cup .f-anchor .banner{animation-delay:1.72s}
+.hero-cup .f-bridge .pick{animation-delay:1.68s}.hero-cup .f-bridge .banner{animation-delay:1.85s}
+.hero-cup .f-lift .pick{animation-delay:1.81s}.hero-cup .f-lift .banner{animation-delay:1.98s}
+@keyframes hero-tub{from{transform:translateY(170px);opacity:0}40%{opacity:1}to{transform:none;opacity:1}}
+@keyframes hero-drop{0%{transform:translateY(-460px);opacity:0;animation-timing-function:cubic-bezier(.5,0,.9,.6)}
 12%{opacity:1}58%{transform:translateY(0);animation-timing-function:ease-out}
 72%{transform:translateY(5px) scale(1.06,.92)}86%{transform:translateY(-6px) scale(.98,1.03)}
 100%{transform:none;opacity:1}}
-@keyframes pick{from{transform:scaleY(0)}to{transform:none}}
-@keyframes banner{from{transform:scaleX(0);opacity:0}to{transform:none;opacity:1}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+@keyframes hero-pick{from{transform:scaleY(0)}to{transform:none}}
+@keyframes hero-banner{from{transform:scaleX(0);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.hero-cup *{animation:none!important}}
 """
 
 
@@ -323,14 +326,15 @@ def cup_of_three(dr, light_tub=False, flags=True):
     top, wt, wb, h = 330, 340, 262, 140
     speckle = not light_tub  # the white tub on the social card stays clean
     # Scoops sit low enough that the tub's front hides their bases, and stay inside the rim.
-    scoops = "".join(scoop(dr, cx, cy, r, c, sd, kind, shadow="soft", speckle=True, cls=f"scoop s-{role}")
+    soft = f"{dr.prefix}soft"
+    scoops = "".join(scoop(dr, cx, cy, r, c, sd, kind, shadow=soft, speckle=True, cls=f"scoop s-{role}")
                      for cx, cy, r, c, sd, kind, role in [
                          (250, 218, 88, LEMON, 5, "zest", "lift"),
                          (330, 302, 84, PIST, 8, "shards", "bridge"),
                          (172, 300, 88, ROSE, 3, "seeds", "anchor"),
                      ])
     back = f'<g class="tub">{tub_back(250, top, wt, h, light=light_tub)}</g>'
-    front = f'<g class="tub">{tub(dr, 250, top, wt, wb, h, light=light_tub, shadow="soft", speckle=speckle)}</g>'
+    front = f'<g class="tub">{tub(dr, 250, top, wt, wb, h, light=light_tub, shadow=soft, speckle=speckle)}</g>'
     out = back + scoops + front
     if flags:
         fill, ink, pick = (LEMON, INK, CREAM) if light_tub else (INK, CREAM, INK)
@@ -349,12 +353,21 @@ def mark_body(dr):
 
 # ---------------------------------------------------------------- files
 
-def hero(animated=True):
-    dr = Drawing("h")
+def hero():
+    dr = Drawing("hero-")
     body = cup_of_three(dr)
-    if animated:
-        dr.defs.append(f"<style>{HERO_MOTION.strip()}</style>")
-    return dr.svg(500, 500, body)
+    dr.defs.append(f"<style>{HERO_MOTION.strip()}</style>")
+    return dr.svg(500, 500, body, cls="hero-cup")
+
+
+def write_hero_into_page(svg):
+    """Put the hero drawing inside index.html, between the hero-art markers."""
+    page = ROOT / "index.html"
+    text = page.read_text()
+    start, end = "<!-- hero-art:start -->", "<!-- hero-art:end -->"
+    before, rest = text.split(start, 1)
+    _, after = rest.split(end, 1)
+    page.write_text(f"{before}{start}\n        {svg.strip()}\n        {end}{after}")
 
 
 def mark():
@@ -408,7 +421,6 @@ def main():
     art.mkdir(exist_ok=True)
     files = {
         art / "hero.svg": hero(),
-        art / "hero-static.svg": hero(animated=False),
         art / "mark.svg": mark(),
         art / "app-icon.svg": app_icon(),
         art / "tub.svg": small_tub(False),
@@ -423,6 +435,8 @@ def main():
     for path, text in files.items():
         path.write_text(text)
         print(f"{path.relative_to(ROOT)}  {len(text.encode()) / 1024:.1f} KB")
+    write_hero_into_page(files[art / "hero.svg"])
+    print("index.html  hero drawing updated")
 
 
 if __name__ == "__main__":
