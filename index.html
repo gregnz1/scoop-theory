@@ -19,8 +19,8 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles.css?v=6">
-  <script src="app.js?v=3" defer></script>
+  <link rel="stylesheet" href="styles.css?v=7">
+  <script src="app.js?v=4" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#calculator">Skip to the calculator</a>
@@ -54,7 +54,10 @@
         </div>
       </div>
       <div class="hero-art" aria-hidden="true">
-        <img src="art/hero.svg" alt="" width="500" height="500" decoding="async">
+        <picture>
+          <source srcset="art/hero-static.svg" media="(prefers-reduced-motion: reduce)">
+          <img src="art/hero.svg" alt="" width="500" height="500" decoding="async">
+        </picture>
       </div>
     </section>
 
@@ -85,7 +88,7 @@
 
           <div class="field-group">
             <div class="field-label-row">
-              <label for="second-select" class="scoop-role-label"><span class="scoop-step">2</span><span><strong id="second-role-name">Partner</strong><small id="second-role-help">A bridge or lift for your anchor</small></span></label>
+              <label for="second-select" class="scoop-role-label"><span class="scoop-step">2</span><span><strong id="second-role-name">Lift</strong><small id="second-role-help">Contrast that keeps your anchor from going flat</small></span></label>
             </div>
             <select id="second-select" name="second">
               <option value="">Recommend one for me</option>
@@ -166,7 +169,7 @@
       <div class="verdict-scale" aria-label="Combination verdict scale">
         <span>Exceptional</span><span>Excellent</span><span>Strong</span><span>Good</span><span>Adventurous</span>
       </div>
-      <p class="method-note">Every pair and trio uses the same five-step verdict scale. The engine weighs classic flavour affinities, shared aromas, richness, acidity, bitterness, and texture. It treats a pairing as sensory judgement, not mathematical fact.</p>
+      <p class="method-note">Every pair and trio uses the same five-step verdict scale. The engine weighs classic flavour affinities, shared aromas, richness, acidity, bitterness, and texture. Verdicts are graded against the best cups the current cabinet can make, so Exceptional is kept for roughly the top tenth of our own suggestions, and Adventurous means less conventional than most possible cups. It treats a pairing as sensory judgement, not mathematical fact.</p>
     </section>
 
     <section class="cabinet-section" id="cabinet" aria-labelledby="cabinet-title">

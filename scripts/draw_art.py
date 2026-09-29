@@ -7,7 +7,8 @@ identical files unless the drawing code below changes.
     python3 scripts/draw_art.py
 
 Writes:
-    art/hero.svg                 hero illustration (500 x 500)
+    art/hero.svg                 hero illustration (500 x 500), animated: tub, then scoops, then flags
+    art/hero-static.svg          the same drawing without motion, for people who turn animation off
     art/mark.svg                 three-scoop tub mark, no background
     art/app-icon.svg             square cream icon used to render the PNG icons
     art/scoop-<family>.svg       one scoop per flavour family, for the UI
@@ -20,8 +21,11 @@ The PNGs (og-image.png, apple-touch-icon.png, art/icon-192.png,
 art/icon-512.png) are rendered from these SVGs with a headless browser;
 see scripts/render_png.py.
 """
+import base64
 import math
 import random
+import struct
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -134,6 +138,37 @@ def scoop_outline(cx, cy, r, seed, lobes=4, frill=0.13, samples=7):
     return spline(pts, tension=0.85)
 
 
+def _png(width, height, rows, palette, alphas):
+    """A minimal indexed-colour PNG (8-bit indices, with transparency)."""
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
+    raw = b"".join(b"\x00" + bytes(row) for row in rows)
+    return (b"\x89PNG\r\n\x1a\n"
+            + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 3, 0, 0, 0))
+            + chunk(b"PLTE", b"".join(bytes(_rgb(c)) for c in palette))
+            + chunk(b"tRNS", bytes(alphas))
+            + chunk(b"IDAT", zlib.compress(raw, 9))
+            + chunk(b"IEND", b""))
+
+
+def speckle_pattern(pid="speckle", tile=48, px=96, seed=9):
+    """Fine ink speckle, like print grain, as a small repeating tile."""
+    rnd = random.Random(seed)
+    levels = 8
+    rows = []
+    for _ in range(px):
+        row = []
+        for _ in range(px):
+            v = rnd.gauss(0.5, 0.13)
+            alpha = min(max(0.41 - 0.84 * v, 0.0), 0.41)
+            row.append(round(alpha / 0.41 * (levels - 1)))
+        rows.append(row)
+    png = _png(px, px, rows, [INK] * levels, [round(i / (levels - 1) * 0.41 * 255 * 0.55) for i in range(levels)])
+    uri = "data:image/png;base64," + base64.b64encode(png).decode()
+    return (f'<pattern id="{pid}" width="{tile}" height="{tile}" patternUnits="userSpaceOnUse">'
+            f'<image href="{uri}" width="{tile}" height="{tile}"/></pattern>')
+
+
 class Drawing:
     """Collects <defs> and body markup with ids unique to one file."""
 
@@ -182,7 +217,7 @@ def bits(kind, cx, cy, r, colour, seed):
     return "".join(out)
 
 
-def scoop(dr, cx, cy, r, colour, seed, kind, shadow=None, detail=2):
+def scoop(dr, cx, cy, r, colour, seed, kind, shadow=None, detail=2, speckle=False, cls=None):
     """A cut-paper scoop: base, darker cut on the shaded side, light cuts, inclusions."""
     sid, cid = dr.uid("s"), dr.uid("c")
     dr.defs.append(f'<path id="{sid}" d="{scoop_outline(cx, cy, r, seed, lobes=4 if detail > 1 else 3)}"/>')
@@ -199,10 +234,14 @@ def scoop(dr, cx, cy, r, colour, seed, kind, shadow=None, detail=2):
             outer = arc(cx + r * ox, cy + r * oy, r * R, a0, a1)
             inner = arc(cx + r * ox, cy + r * oy + r * w, r * (R - w * 0.4), a1, a0)
             out += f'<path d="{spline(outer, closed=False)}L{n(inner[0][0])},{n(inner[0][1])} {spline(inner, closed=False)[1:]}Z" fill="{tint(colour, 0.32)}"/>'
-    return out + bits(kind, cx, cy, r, colour, seed) + "</g>"
+    out += bits(kind, cx, cy, r, colour, seed)
+    if speckle:
+        out += f'<rect x="{n(cx - r * 1.2)}" y="{n(cy - r * 1.2)}" width="{n(r * 2.4)}" height="{n(r * 2.4)}" fill="url(#speckle)"/>'
+    out += "</g>"
+    return f'<g class="{cls}">{out}</g>' if cls else out
 
 
-def tub(dr, cx, top, wt, wb, h, light=False, shadow=None):
+def tub(dr, cx, top, wt, wb, h, light=False, shadow=None, speckle=False):
     """A short paper tub: body, cut band, shaded side and rolled rim."""
     body_col, band_col, rim_col = (PAPER, ROSE, RIM_LIGHT) if light else (INK, CREAM, RIM)
     L, R = cx - wt / 2, cx + wt / 2
@@ -219,7 +258,9 @@ def tub(dr, cx, top, wt, wb, h, light=False, shadow=None):
     by, bh = top + h * 0.42, h * 0.13
     out += (f'<use href="#{tid}" fill="{body_col}"/><g clip-path="url(#{cid})">'
             f'<path d="M{n(L - 10)},{n(by)}Q{n(cx)},{n(by + bh * 0.9)} {n(R + 10)},{n(by)}L{n(R + 10)},{n(by + bh)}Q{n(cx)},{n(by + bh * 1.9)} {n(L - 10)},{n(by + bh)}Z" fill="{band_col}"/>'
-            f'<path d="M{n(cx + wt * 0.18)},{n(top)}L{n(R + 5)},{n(top)}L{n(br)},{n(top + h)}L{n(cx + wb * 0.22)},{n(top + h)}Z" fill="{INK}" opacity="{".18" if not light else ".1"}"/></g>')
+            f'<path d="M{n(cx + wt * 0.18)},{n(top)}L{n(R + 5)},{n(top)}L{n(br)},{n(top + h)}L{n(cx + wb * 0.22)},{n(top + h)}Z" fill="{INK}" opacity="{".18" if not light else ".1"}"/>'
+            + (f'<rect x="{n(L - 10)}" y="{n(top - 10)}" width="{n(wt + 20)}" height="{n(h + 20)}" fill="url(#speckle)"/>' if speckle else "")
+            + '</g>')
     out += f'<rect x="{n(L - wt * 0.03)}" y="{n(top - h * 0.05)}" width="{n(wt * 1.06)}" height="{n(h * 0.15)}" rx="{n(h * 0.075)}" fill="{rim_col}"/>'
     return out
 
@@ -231,51 +272,71 @@ def tub_back(cx, top, wt, h, light=False):
     return f'<rect x="{n(L)}" y="{n(top - h * 0.13)}" width="{n(wt * 1.04)}" height="{n(h * 0.2)}" rx="{n(h * 0.1)}" fill="{fill}"/>'
 
 
-def flag(px, py, tx, ty, text, side, fill=PAPER, pick=INK, size=17):
-    """A toothpick flag pushed into a scoop at (px, py)."""
-    w = len(text) * size * 0.5 + size * 1.3
-    h = size * 1.75
+def flag(x, base, top, text, side, fill=INK, ink=CREAM, pick=INK, size=18, cls=""):
+    """A toothpick flag: a vertical pick pushed into a scoop at (x, base), with a level
+    swallow-tailed banner at its top pointing away from the cup (side = 1 right, -1 left)."""
+    h = size * 1.7
+    w = len(text) * size * 0.5 + size * 1.5
     notch = size * 0.45
-    x0 = tx if side > 0 else tx - w
-    if side > 0:
-        d = f"M{n(x0)},{n(ty)}L{n(x0 + w)},{n(ty)}L{n(x0 + w - notch)},{n(ty + h / 2)}L{n(x0 + w)},{n(ty + h)}L{n(x0)},{n(ty + h)}Z"
-        mid = x0 + (w - notch) / 2
-    else:
-        d = f"M{n(x0 + w)},{n(ty)}L{n(x0)},{n(ty)}L{n(x0 + notch)},{n(ty + h / 2)}L{n(x0)},{n(ty + h)}L{n(x0 + w)},{n(ty + h)}Z"
-        mid = x0 + notch + (w - notch) / 2
-    return (f'<path d="M{n(px)},{n(py)}L{n(tx)},{n(ty - 6)}" stroke="{pick}" stroke-width="2.6" stroke-linecap="round"/>'
-            f'<path d="{d}" fill="{INK}" opacity=".25" transform="translate(3,4)"/><path d="{d}" fill="{fill}"/>'
-            f'<text x="{n(mid)}" y="{n(ty + h * 0.66)}" text-anchor="middle" font-family="{SERIF}" font-style="italic" font-size="{size}" fill="{INK}">{text}</text>')
+    far = x + side * w
+    d = (f"M{n(x)},{n(top)}L{n(far)},{n(top)}L{n(far - side * notch)},{n(top + h / 2)}"
+         f"L{n(far)},{n(top + h)}L{n(x)},{n(top + h)}Z")
+    mid = x + side * (w - notch) / 2
+    return (f'<g class="flag {cls}">'
+            f'<path class="pick" style="transform-origin:{n(x)}px {n(base)}px" d="M{n(x)},{n(base)}L{n(x)},{n(top)}" stroke="{pick}" stroke-width="2.4" stroke-linecap="round"/>'
+            f'<g class="banner" style="transform-origin:{n(x)}px {n(top + h / 2)}px"><path d="{d}" fill="{fill}"/>'
+            f'<text x="{n(mid)}" y="{n(top + h * 0.66)}" text-anchor="middle" font-family="{SERIF}" font-style="italic" font-size="{size}" fill="{ink}">{text}</text></g></g>')
 
 
 def filters(dr):
     dr.defs.append('<filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.5"/></filter>')
-    # fine ink speckle, kept inside the shapes it is applied to
-    dr.defs.append('<filter id="grain" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">'
-                   '<feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="9" stitchTiles="stitch" result="n"/>'
-                   '<feColorMatrix in="n" type="matrix" values="0 0 0 0 0.17 0 0 0 0 0.12 0 0 0 0 0.16 0 0 0 -0.84 0.41" result="s"/>'
-                   '<feComposite in="s" in2="SourceAlpha" operator="in" result="sp"/>'
-                   '<feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="sp"/></feMerge></filter>')
+    dr.defs.append(speckle_pattern())
+
+
+# The hero arrives in order: the tub rises into place, the three scoops drop into it one at a
+# time (anchor, bridge, lift), then the flags go in. It plays once and is off for anyone who has
+# asked their device to reduce motion.
+HERO_MOTION = """
+.tub{animation:tub .7s cubic-bezier(.2,.8,.3,1.12) both}
+.scoop{transform-box:fill-box;transform-origin:50% 88%;animation:drop .8s both}
+.s-anchor{animation-delay:.45s}.s-bridge{animation-delay:.65s}.s-lift{animation-delay:.85s}
+.flag .pick{animation:pick .28s cubic-bezier(.3,.7,.4,1) both}
+.flag .banner{animation:banner .32s cubic-bezier(.3,.8,.4,1.25) both}
+.f-anchor .pick{animation-delay:1.55s}.f-anchor .banner{animation-delay:1.72s}
+.f-bridge .pick{animation-delay:1.68s}.f-bridge .banner{animation-delay:1.85s}
+.f-lift .pick{animation-delay:1.81s}.f-lift .banner{animation-delay:1.98s}
+@keyframes tub{from{transform:translateY(170px);opacity:0}40%{opacity:1}to{transform:none;opacity:1}}
+@keyframes drop{0%{transform:translateY(-460px);opacity:0;animation-timing-function:cubic-bezier(.5,0,.9,.6)}
+12%{opacity:1}58%{transform:translateY(0);animation-timing-function:ease-out}
+72%{transform:translateY(5px) scale(1.06,.92)}86%{transform:translateY(-6px) scale(.98,1.03)}
+100%{transform:none;opacity:1}}
+@keyframes pick{from{transform:scaleY(0)}to{transform:none}}
+@keyframes banner{from{transform:scaleX(0);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+"""
 
 
 def cup_of_three(dr, light_tub=False, flags=True):
-    """Anchor, bridge and lift in a tub - the hero and social-card drawing (500 x 500 units)."""
+    """Anchor, bridge and lift in a tub - the hero and social-card drawing (500 x 500 units).
+    Layers, back to front: tub's inside wall, lift, bridge, anchor, tub front, flags."""
     filters(dr)
     top, wt, wb, h = 330, 340, 262, 140
+    speckle = not light_tub  # the white tub on the social card stays clean
     # Scoops sit low enough that the tub's front hides their bases, and stay inside the rim.
-    scoops = "".join(scoop(dr, cx, cy, r, c, sd, kind, shadow="soft") for cx, cy, r, c, sd, kind in [
-        (250, 218, 88, LEMON, 5, "zest"),
-        (330, 302, 84, PIST, 8, "shards"),
-        (172, 300, 88, ROSE, 3, "seeds"),
-    ])
-    back = tub_back(250, top, wt, h, light=light_tub)
-    pot = tub(dr, 250, top, wt, wb, h, light=light_tub, shadow="soft")
-    out = f'<g filter="url(#grain)">{back}{scoops}{"" if light_tub else pot}</g>' + (pot if light_tub else "")
+    scoops = "".join(scoop(dr, cx, cy, r, c, sd, kind, shadow="soft", speckle=True, cls=f"scoop s-{role}")
+                     for cx, cy, r, c, sd, kind, role in [
+                         (250, 218, 88, LEMON, 5, "zest", "lift"),
+                         (330, 302, 84, PIST, 8, "shards", "bridge"),
+                         (172, 300, 88, ROSE, 3, "seeds", "anchor"),
+                     ])
+    back = f'<g class="tub">{tub_back(250, top, wt, h, light=light_tub)}</g>'
+    front = f'<g class="tub">{tub(dr, 250, top, wt, wb, h, light=light_tub, shadow="soft", speckle=speckle)}</g>'
+    out = back + scoops + front
     if flags:
-        fill, pick = (LEMON, CREAM) if light_tub else (PAPER, INK)
-        out += flag(262, 156, 292, 52, "lift", 1, fill, pick)
-        out += flag(146, 262, 104, 164, "anchor", -1, fill, pick)
-        out += flag(356, 262, 400, 172, "bridge", 1, fill, pick)
+        fill, ink, pick = (LEMON, INK, CREAM) if light_tub else (INK, CREAM, INK)
+        out += flag(150, 252, 150, "anchor", -1, fill, ink, pick, cls="f-anchor")
+        out += flag(352, 258, 150, "bridge", 1, fill, ink, pick, cls="f-bridge")
+        out += flag(262, 166, 58, "lift", 1, fill, ink, pick, cls="f-lift")
     return out
 
 
@@ -288,9 +349,12 @@ def mark_body(dr):
 
 # ---------------------------------------------------------------- files
 
-def hero():
+def hero(animated=True):
     dr = Drawing("h")
-    return dr.svg(500, 500, cup_of_three(dr))
+    body = cup_of_three(dr)
+    if animated:
+        dr.defs.append(f"<style>{HERO_MOTION.strip()}</style>")
+    return dr.svg(500, 500, body)
 
 
 def mark():
@@ -344,6 +408,7 @@ def main():
     art.mkdir(exist_ok=True)
     files = {
         art / "hero.svg": hero(),
+        art / "hero-static.svg": hero(animated=False),
         art / "mark.svg": mark(),
         art / "app-icon.svg": app_icon(),
         art / "tub.svg": small_tub(False),

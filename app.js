@@ -53,6 +53,9 @@
     [new Set(["salt", "salty"]), CARAMEL_TAGS, 6]
   ];
 
+  // The flavour shown on first visit: permanent classics, in order of preference.
+  const DEFAULT_ANCHORS = ["pistachio-praline", "hazelnut", "salted-caramel", "boysenberry"];
+
   const elements = {};
   let flavours = [];
   let flavourById = new Map();
@@ -146,7 +149,7 @@
       const recommendedGroup = document.createElement("optgroup");
       recommendedGroup.label = recommendationLabel;
       recommended.forEach((item, index) => {
-        const level = verdictLevel(item.score, item.size || 2);
+        const level = verdictLevel(item.score, item.size || 2, item.style);
         recommendedGroup.append(flavourOption(item.flavour, `${index + 1}. ${item.flavour.name} - ${level}`));
       });
       nodes.push(recommendedGroup);
@@ -173,10 +176,10 @@
     const second = flavourById.get(state.secondId);
     const availableSecond = flavours.filter(flavour => flavour.id !== state.anchorId && (state.mode !== "3" || flavour.id !== state.thirdId));
     const recommendedSecond = anchor
-      ? twoScoopRecommendations(anchor).map(result => ({flavour: result.flavours[1], score: result.score, size: 2}))
+      ? twoScoopRecommendations(anchor).map(result => ({flavour: result.flavours[1], score: result.verdictScore, size: 2, style: result.style}))
       : [];
     fillFlavourSelect(elements["second-select"], {
-      placeholder: state.mode === "3" ? "Recommend a bridge for me" : "Recommend a partner for me",
+      placeholder: `Recommend a ${secondRole().name.toLowerCase()} for me`,
       available: availableSecond,
       recommended: recommendedSecond,
       recommendationLabel: anchor ? `Recommended for ${anchor.name}` : "Recommended"
@@ -186,9 +189,17 @@
     fillFlavourSelect(elements["third-select"], {
       placeholder: "Recommend a lift for me",
       available: flavours.filter(flavour => flavour.id !== state.anchorId && flavour.id !== state.secondId),
-      recommended: completion.results.map(result => ({flavour: result.flavours[2], score: result.score, size: 3})),
+      recommended: completion.results.map(result => ({flavour: result.flavours[2], score: result.score, size: 3, style: result.style})),
       recommendationLabel: "Recommended lifts for this pair"
     });
+  }
+
+  // In a three-scoop cup the second scoop is the bridge. In a pair it is the lift, unless the
+  // "Same lane" style is asking for an echo, in which case it is a bridge.
+  function secondRole() {
+    if (state.mode === "3") return {name: "Bridge", help: "A connecting note between anchor and lift"};
+    if (state.styles["2"] === "echo") return {name: "Bridge", help: "A shared note that echoes your anchor"};
+    return {name: "Lift", help: "Contrast that keeps your anchor from going flat"};
   }
 
   function selectedCup() {
@@ -200,8 +211,8 @@
   function syncBuilder() {
     rebuildPartnerSelects();
     elements["third-field"].hidden = state.mode !== "3";
-    elements["second-role-name"].textContent = state.mode === "3" ? "Bridge" : "Partner";
-    elements["second-role-help"].textContent = state.mode === "3" ? "A connecting note between anchor and lift" : "A bridge or lift for your anchor";
+    elements["second-role-name"].textContent = secondRole().name;
+    elements["second-role-help"].textContent = secondRole().help;
     elements["anchor-select"].value = state.anchorId;
     elements["second-select"].value = state.secondId;
     elements["third-select"].value = state.thirdId;
@@ -241,8 +252,22 @@
     return bonus;
   }
 
-  function pairScore(a, b, style = "balanced") {
+  const pairScoreCache = new Map();
+
+  // The ranking score is capped at 98, which leaves many strong pairs tied at the ceiling;
+  // the uncapped score is kept so verdicts and exact ties can still tell those pairs apart.
+  function uncappedPairScore(a, b, style = "balanced") {
     if (!a || !b || a.id === b.id) return -Infinity;
+    const key = `${style}|${a.id}|${b.id}`;
+    if (!pairScoreCache.has(key)) pairScoreCache.set(key, rawPairScore(a, b, style));
+    return pairScoreCache.get(key);
+  }
+
+  function pairScore(a, b, style = "balanced") {
+    return clamp(uncappedPairScore(a, b, style), 20, 98);
+  }
+
+  function rawPairScore(a, b, style) {
     let score = 43;
     const manual = manualPair(a, b);
     if (manual) score += 22 - manual.rank * 2.5;
@@ -281,7 +306,7 @@
 
     if (style === "balanced" && a.profile.richness >= 5 && b.profile.richness >= 5 && a.profile.brightness < 2 && b.profile.brightness < 2) score -= 9;
     if (style === "balanced" && a.profile.sweetness >= 5 && b.profile.sweetness >= 5 && !hasBright) score -= 6;
-    return clamp(score, 20, 98);
+    return score;
   }
 
   function pairReason(a, b) {
@@ -312,17 +337,73 @@
     return ({bright: "fruit and tang", tropical: "tropical aroma", chocolate: "chocolate and roast", nut: "nut and praline", custard: "custard and caramel", bakery: "biscuit and crunch"})[family] || family;
   }
 
-  function pairLabel(score) {
-    return `${verdictLevel(score, 2)} combination`;
+  function pairLabel(score, style) {
+    return `${verdictLevel(score, 2, style)} combination`;
   }
 
-  function verdictLevel(score, size) {
-    const thresholds = size === 3 ? [104, 94, 84, 74] : [86, 76, 67, 58];
-    if (score >= thresholds[0]) return "Exceptional";
-    if (score >= thresholds[1]) return "Excellent";
-    if (score >= thresholds[2]) return "Strong";
-    if (score >= thresholds[3]) return "Good";
-    return "Adventurous";
+  // Verdicts are graded against the cups this guide itself recommends. For the current cabinet and
+  // pairing style, every flavour's four best cups form the reference pool: the top 10% of that pool
+  // is Exceptional, then Excellent to 35% and Strong to 70%. Good is any cup better than the middle
+  // of every cup the cabinet could make; below that it is Adventurous. A fixed score bar made nearly
+  // every recommendation Exceptional, because the cups shown are always the best of hundreds.
+  // Ranking and scoring are unchanged; only the words move.
+  const VERDICT_BANDS = [["Exceptional", 0.10], ["Excellent", 0.35], ["Strong", 0.70], ["Good", null]];
+  const verdictCache = new Map();
+
+  function verdictThresholds(size, style) {
+    const key = `${size}|${style}`;
+    if (verdictCache.has(key)) return verdictCache.get(key);
+    const best = new Map(flavours.map(flavour => [flavour.id, []]));
+    const everything = [];
+    if (size === 2) {
+      flavours.forEach(anchor => {
+        const pairs = flavours.filter(flavour => flavour.id !== anchor.id)
+          .map(flavour => ({capped: pairScore(anchor, flavour, style), uncapped: uncappedPairScore(anchor, flavour, style)}));
+        pairs.forEach(item => everything.push(item.uncapped));
+        pairs.sort((a, b) => b.capped - a.capped || b.uncapped - a.uncapped);
+        best.set(anchor.id, pairs.slice(0, 4).map(item => item.uncapped));
+      });
+    } else {
+      // Each possible cup is scored once and counted towards all three of its flavours' lists.
+      for (let a = 0; a < flavours.length; a += 1) {
+        for (let b = a + 1; b < flavours.length; b += 1) {
+          for (let c = b + 1; c < flavours.length; c += 1) {
+            const cup = [flavours[a], flavours[b], flavours[c]];
+            if (!triadPassesMode(cup, style)) continue;
+            const score = triadScore(cup, style);
+            everything.push(score);
+            cup.forEach(flavour => best.get(flavour.id).push(score));
+          }
+        }
+      }
+      best.forEach((scores, id) => best.set(id, scores.sort((x, y) => y - x).slice(0, 4)));
+    }
+    const pool = [...best.values()].flat().sort((a, b) => b - a);
+    everything.sort((a, b) => a - b);
+    const middle = everything.length ? everything[Math.floor(everything.length / 2)] : Infinity;
+    const thresholds = VERDICT_BANDS.map(([, share]) => share === null ? middle : bandCutoff(pool, share));
+    thresholds[3] = Math.min(thresholds[3], thresholds[2]);
+    verdictCache.set(key, thresholds);
+    return thresholds;
+  }
+
+  // The lowest score that keeps a band (with the bands above it) within its share of the pool.
+  // Tied scores are counted together, so a tie can make a band smaller but never larger.
+  function bandCutoff(pool, share) {
+    const limit = Math.floor(pool.length * share);
+    let threshold = Infinity;
+    for (let index = 0; index < pool.length; index += 1) {
+      if (index + 1 < pool.length && pool[index + 1] === pool[index]) continue;
+      if (index + 1 > limit) break;
+      threshold = pool[index];
+    }
+    return threshold;
+  }
+
+  function verdictLevel(score, size, style = "balanced") {
+    const thresholds = verdictThresholds(size, style);
+    const band = VERDICT_BANDS.findIndex((_, index) => score >= thresholds[index]);
+    return band === -1 ? "Adventurous" : VERDICT_BANDS[band][0];
   }
 
   function deterministicJitter(id) {
@@ -336,10 +417,12 @@
       .filter(flavour => flavour.id !== anchor.id)
       .map(flavour => ({
         flavours: [anchor, flavour],
+        style,
         score: pairScore(anchor, flavour, style),
+        verdictScore: uncappedPairScore(anchor, flavour, style),
         reason: pairReason(anchor, flavour)
       }))
-      .sort((a, b) => (b.score + deterministicJitter(b.flavours[1].id)) - (a.score + deterministicJitter(a.flavours[1].id)));
+      .sort((a, b) => (b.score + deterministicJitter(b.flavours[1].id)) - (a.score + deterministicJitter(a.flavours[1].id)) || b.verdictScore - a.verdictScore);
 
     ranked = promotePreferred(ranked);
     return ranked.slice(0, 4);
@@ -407,6 +490,7 @@
         if (!triadPassesMode(cup, style)) continue;
         ranked.push({
           flavours: cup,
+          style,
           score: triadScore(cup, style),
           reason: triadReason(cup, style)
         });
@@ -437,7 +521,8 @@
   function assignRoles(cup) {
     if (cup.length === 2) {
       const partner = cup[1];
-      const role = partner.profile.brightness >= 3 ? "lift" : sharedSpecificTags(cup[0], partner).length ? "bridge" : "contrast";
+      // The method has three roles; in a pair the second scoop either echoes the anchor (bridge) or contrasts it (lift).
+      const role = partner.profile.brightness < 3 && sharedSpecificTags(cup[0], partner).length ? "bridge" : "lift";
       return [{flavour: cup[0], role: "anchor"}, {flavour: partner, role}];
     }
     return [
@@ -469,8 +554,8 @@
     return `${prefix}: ${anchor.name} carries the weight, ${bridge.name} ${bridgePhrase}, and ${lift.name} ${liftPhrase}.`;
   }
 
-  function triadLabel(score) {
-    return `${verdictLevel(score, 3)} combination`;
+  function triadLabel(score, style) {
+    return `${verdictLevel(score, 3, style)} combination`;
   }
 
   function feedbackNotes(cup, style) {
@@ -521,7 +606,7 @@
       .filter(flavour => flavour.id !== first.id && flavour.id !== second.id)
       .map(flavour => {
         const cup = [first, second, flavour];
-        return {flavours: cup, score: triadScore(cup, style), reason: triadReason(cup, style)};
+        return {flavours: cup, style, score: triadScore(cup, style), reason: triadReason(cup, style)};
       })
       .sort((a, b) => b.score - a.score);
     const matching = all.filter(result => triadPassesMode(result.flavours, style));
@@ -542,7 +627,7 @@
   function assessmentCard(cup) {
     const style = cup.length === 2 ? state.styles["2"] : state.styles["3"];
     const score = cup.length === 2 ? pairScore(cup[0], cup[1], style) : triadScore(cup, style);
-    const label = cup.length === 2 ? pairLabel(score) : triadLabel(score);
+    const label = cup.length === 2 ? pairLabel(uncappedPairScore(cup[0], cup[1], style), style) : triadLabel(score, style);
     const reason = cup.length === 2 ? pairReason(cup[0], cup[1]) : triadReason(cup, style);
     const roles = assignRoles(cup);
     const card = document.createElement("article");
@@ -601,6 +686,7 @@
         state.shuffleSeed = 0;
         state.preferredCombo = [];
         renderStyleOptions();
+        syncBuilder();
         renderResults();
         writeUrlState();
       });
@@ -697,9 +783,12 @@
 
     const copy = document.createElement("div");
     const names = result.flavours.map(flavour => flavour.name).join(" + ");
-    const rankLabel = result.flavours.length === 3 ? triadLabel(result.score) : pairLabel(result.score);
+    const verdict = result.flavours.length === 3 ? triadLabel(result.score, result.style) : pairLabel(result.verdictScore ?? result.score, result.style);
+    const ids = result.flavours.map(flavour => flavour.id).sort().join("|");
+    const shared = state.preferredCombo.length && [...state.preferredCombo].sort().join("|") === ids;
+    const prefix = shared ? "Shared cup - " : index === 0 && !state.shuffleSeed ? "Top pick - " : "";
     copy.innerHTML = `
-      <p class="recommendation-rank">${index === 0 ? "Top recommendation" : escapeHtml(rankLabel)}</p>
+      <p class="recommendation-rank">${escapeHtml(prefix + verdict)}</p>
       <h4>${escapeHtml(names)}</h4>
       <p class="reason">${escapeHtml(result.reason)}</p>
       <div class="role-row">${roles.map(item => `<span class="role-tag">${escapeHtml(item.flavour.name)} - ${item.role}</span>`).join("")}</div>`;
@@ -895,6 +984,13 @@
     });
   }
 
+  // Work out the three-scoop grading scale while the page is idle, so the first switch to
+  // three scoops doesn't pause to calculate it.
+  function warmVerdicts() {
+    const idle = window.requestIdleCallback || (callback => setTimeout(callback, 300));
+    idle(() => verdictThresholds(3, state.styles["3"]));
+  }
+
   async function init() {
     cacheElements();
     try {
@@ -902,10 +998,11 @@
       updateCabinetMeta(data);
       buildFlavourSelects();
       readUrlState();
-      if (!state.anchorId) state.anchorId = flavourById.has("cheesecake-chill") ? "cheesecake-chill" : flavours[0]?.id || "";
+      if (!state.anchorId) state.anchorId = DEFAULT_ANCHORS.find(id => flavourById.has(id)) || flavours[0]?.id || "";
       attachEvents();
       renderMode();
       renderCabinet();
+      warmVerdicts();
     } catch (error) {
       console.error(error);
       elements["results-title"].textContent = "The cabinet could not be loaded.";
