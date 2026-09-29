@@ -128,7 +128,13 @@
     elements["special-count"].textContent = String(specials.length);
     elements["checked-date"].textContent = prettyDate(data.specials.source.checkedAt);
     const end = rotation?.to ? prettyDate(rotation.to).replace(/ \d{4}$/, "") : "the next rotation";
-    elements["rotation-label"].textContent = `${rotation?.label || "Current specials"} - in cabinet until ${end}`;
+    // Once the listed end date has passed and the new specials aren't in yet, don't promise a
+    // date that's already gone; say when the list was last updated instead.
+    const today = new Intl.DateTimeFormat("en-CA", {timeZone: "Australia/Sydney"}).format(new Date());
+    const lapsed = rotation?.to && today > rotation.to;
+    elements["rotation-label"].textContent = lapsed
+      ? `Specials last updated ${prettyDate(data.specials.source.checkedAt)} - new ones coming soon`
+      : `${rotation?.label || "Current specials"} - in cabinet until ${end}`;
   }
 
   function flavourOption(flavour, text = "") {

@@ -4,6 +4,13 @@
 The official page is used only to identify the current rotation and its stated
 building blocks. The public output retains names, dates and independent derived
 sensory tags; it does not republish official descriptions or imagery.
+
+Run weekly by .github/workflows/refresh-specials.yml. Flavours already in
+data/specials.json keep their written-up entry untouched. Brand-new flavours get
+a rule-based placeholder marked "needsReview": true, and their stated building
+blocks (bases and additions, not Messina's description) go into --report so the
+write-up can be done afterwards. If the set of specials hasn't changed, the data
+file is left exactly as it is.
 """
 
 from __future__ import annotations
@@ -60,13 +67,13 @@ TAG_RULES = {
     "boozy": ["rum", "marsala", "whisky", "whiskey", "bourbon", "liqueur", "vermouth", "gin"],
 }
 
-COLOURS = {
+COLOURS = {  # the site's family colours (styles.css .flavour-colour-*)
     "bright": "#e86d68",
     "tropical": "#efb04f",
-    "chocolate": "#7d4a3d",
-    "nut": "#c7a46f",
-    "custard": "#d29a5c",
-    "bakery": "#c28d6c",
+    "chocolate": "#8b5a49",
+    "nut": "#c8ad78",
+    "custard": "#dda869",
+    "bakery": "#c68e6c",
 }
 
 
@@ -142,9 +149,33 @@ def extract_specials(page: str) -> list[dict]:
     if missing:
         raise ValueError(f"Current specials were missing from page data: {missing}")
     selected = [found[slug] for slug in out_slugs]
-    if len(selected) != 10:
-        raise ValueError(f"Expected 10 current specials, found {len(selected)}")
+    if not selected:
+        raise ValueError("No current specials were found on the page")
+    if len(selected) > 30:
+        raise ValueError(f"Found {len(selected)} specials, which looks like a page-reading error")
     return selected
+
+
+def diagnose(page: str) -> dict:
+    """What the page offers, for checking the reader after Messina changes their site."""
+    flight = decode_flight_text(page)
+    found = []
+    marker = '"special":'
+    cursor = 0
+    while True:
+        cursor = flight.find(marker, cursor)
+        if cursor < 0:
+            break
+        try:
+            item = balanced_json(flight, cursor + len(marker), "{", "}")
+            if item.get("slug"):
+                found.append({"slug": item["slug"], "name": item.get("displayName", "")})
+        except ValueError:
+            pass
+        cursor += len(marker)
+    out_marker = flight.find('"outSlugs":')
+    out_slugs = balanced_json(flight, out_marker, "[", "]") if out_marker >= 0 else []
+    return {"outSlugs": out_slugs, "specialsOnPage": found}
 
 
 def strip_tags(value: str) -> str:
@@ -267,11 +298,21 @@ def derived_note(tags: list[str], format_value: str) -> str:
     return f"A current {format_value} profiled around {notes}."
 
 
+def building_blocks(item: dict) -> dict:
+    """The stated components of a new special, for writing it up. Not published on the site."""
+    return {
+        "slug": item["slug"],
+        "name": smart_title(item["displayName"]),
+        "bases": item.get("bases") or [],
+        "additions": item.get("additions") or [],
+        "themes": item.get("themes") or [],
+    }
+
+
 def build_entry(item: dict, old: dict | None, used_ids: set[str]) -> dict:
     source_slug = item["slug"]
     if old:
         entry = dict(old)
-        entry["name"] = smart_title(item["displayName"])
         entry["sourceSlug"] = source_slug
         return entry
 
@@ -293,6 +334,7 @@ def build_entry(item: dict, old: dict | None, used_ids: set[str]) -> dict:
         "profile": derive_profile(tags, format_value),
         "tags": tags,
         "pairs": [],
+        "needsReview": True,
     }
 
 
@@ -301,10 +343,15 @@ def main() -> int:
     parser.add_argument("--source", help="Read an already-downloaded HTML page")
     parser.add_argument("--output", default="data/specials.json")
     parser.add_argument("--classics", default="data/classics.json")
-    parser.add_argument("--check-only", action="store_true")
+    parser.add_argument("--check-only", action="store_true", help="Read the page and report, but write nothing")
+    parser.add_argument("--report", help="Write a JSON report of what changed (new flavours' building blocks)")
+    parser.add_argument("--diagnose", action="store_true", help="Print every special the page mentions, then stop")
     args = parser.parse_args()
 
     page = fetch_html(args.source)
+    if args.diagnose:
+        print(json.dumps(diagnose(page), ensure_ascii=False, indent=2))
+        return 0
     raw_specials = extract_specials(page)
     now = dt.datetime.now(ZoneInfo("Australia/Sydney"))
     rotation = extract_rotation(page, now)
@@ -316,12 +363,36 @@ def main() -> int:
     used_ids = {item["id"] for item in classics["flavours"]}
 
     entries = []
+    added = []
     for item in raw_specials:
-        entry = build_entry(item, previous_by_slug.get(item["slug"]), used_ids)
+        old = previous_by_slug.get(item["slug"])
+        entry = build_entry(item, old, used_ids)
         if entry["id"] in used_ids:
             raise ValueError(f"Duplicate flavour id: {entry['id']}")
         used_ids.add(entry["id"])
         entries.append(entry)
+        if not old:
+            added.append(building_blocks(item))
+    current_slugs = {item["slug"] for item in raw_specials}
+    removed = [item["name"] for item in previous.get("flavours", []) if item.get("sourceSlug") not in current_slugs]
+    unchanged = not added and not removed and previous.get("rotation") == rotation
+
+    report = {
+        "rotation": rotation,
+        "changed": not unchanged,
+        "added": added,
+        "removed": removed,
+        "kept": [entry["name"] for entry in entries if entry.get("sourceSlug") in previous_by_slug],
+    }
+    if args.report:
+        Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    summary = (f"{rotation['label']}: {len(entries)} specials on the page; "
+               f"{len(added)} new ({', '.join(item['name'] for item in added) or 'none'}), "
+               f"{len(removed)} gone ({', '.join(removed) or 'none'})")
+    if unchanged:
+        print(f"No change. {summary}")
+        return 0
 
     result = {
         "source": {
@@ -335,10 +406,10 @@ def main() -> int:
     encoded = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
     json.loads(encoded)
     if args.check_only:
-        print(f"Validated {len(entries)} specials for {rotation['label']}")
+        print(f"Would update (check only, nothing written). {summary}")
         return 0
     output_path.write_text(encoded, encoding="utf-8")
-    print(f"Wrote {len(entries)} specials for {rotation['label']} to {output_path}")
+    print(f"Updated {output_path}. {summary}")
     return 0
 
 

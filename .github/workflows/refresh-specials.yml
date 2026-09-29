@@ -1,0 +1,116 @@
+# Checks Gelato Messina's current-specials page every Monday morning. When the specials have
+# changed, it puts the new list on a "specials/<start date>" branch and opens a pull request.
+# Flavours still in the cabinet keep their write-ups; new ones get placeholder profiles marked
+# needsReview, which Claude's Monday tidy-up replaces before you merge. Nothing goes live until
+# the pull request is merged. Free on public repositories.
+
+name: Refresh specials
+
+on:
+  schedule:
+    - cron: "17 19 * * 0"   # Mondays 5:17 am Brisbane (Sunday 19:17 UTC)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only report what Messina's page shows; change nothing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: refresh-specials
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Read Messina's current specials
+        id: read
+        run: |
+          python3 scripts/refresh_specials.py --check-only --report /tmp/report.json | tee /tmp/summary.txt
+          python3 - >> "$GITHUB_OUTPUT" <<'PY'
+          import json
+          report = json.load(open("/tmp/report.json"))
+          print(f"changed={'true' if report['changed'] else 'false'}")
+          print(f"from={report['rotation']['from']}")
+          print(f"label={report['rotation']['label']}")
+          PY
+          echo "### $(cat /tmp/summary.txt)" >> "$GITHUB_STEP_SUMMARY"
+          echo "::notice title=Specials::$(cat /tmp/summary.txt)"
+
+      - name: Check the current flavour data
+        run: python3 scripts/check_data.py
+
+      - name: Put the new specials on a branch and open a pull request
+        if: steps.read.outputs.changed == 'true' && !inputs.dry_run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FROM: ${{ steps.read.outputs.from }}
+          LABEL: ${{ steps.read.outputs.label }}
+        run: |
+          branch="specials/$FROM"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Reuse this rotation's branch if it exists, so any write-up already done there is kept.
+          if git ls-remote --exit-code --heads origin "$branch" > /dev/null; then
+            git switch "$branch"
+          else
+            git switch -c "$branch"
+          fi
+
+          python3 scripts/refresh_specials.py --report /tmp/branch-report.json
+          python3 scripts/check_data.py
+          if git diff --quiet -- data/specials.json; then
+            echo "The $branch branch already has these specials."
+          else
+            cp /tmp/branch-report.json .github/specials-report.json
+            git add data/specials.json .github/specials-report.json
+            git commit -m "Update to $LABEL"
+            git push origin "$branch"
+          fi
+
+          if [ -n "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+            echo "A pull request for $branch is already open."
+            exit 0
+          fi
+
+          python3 - > /tmp/body.md <<'PY'
+          import json
+          report = json.load(open("/tmp/branch-report.json"))
+          rotation = report["rotation"]
+          lines = [f"Messina's specials page now lists **{rotation['label']}** ({rotation['from']} to {rotation['to']}).", ""]
+          if report["added"]:
+              lines.append("**New:**")
+              for item in report["added"]:
+                  parts = ", ".join(item["bases"] + item["additions"]) or "no components listed"
+                  lines.append(f"- {item['name']} ({parts})")
+              lines.append("")
+          if report["removed"]:
+              lines.append("**Gone:** " + ", ".join(report["removed"]))
+              lines.append("")
+          if report["kept"]:
+              lines.append("**Still in the cabinet (write-ups unchanged):** " + ", ".join(report["kept"]))
+              lines.append("")
+          lines += [
+              "New flavours start with placeholder profiles. Claude's Monday tidy-up writes them up properly on this branch "
+              "(notes, taste profile and best partners) and comments here when it's done. Merge after that.",
+          ]
+          print("\n".join(lines))
+          PY
+
+          gh pr create --base main --head "$branch" --title "$LABEL" --body-file /tmp/body.md \
+            || echo "::warning::Pushed $branch, but GitHub Actions may not open pull requests in this repository. The Claude tidy-up will open it, or turn on Settings > Actions > General > Allow GitHub Actions to create and approve pull requests."
