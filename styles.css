@@ -467,9 +467,54 @@ select option, select optgroup { color: #191117; background: #fff; }
 .method-number { color: var(--rose); font-family: var(--serif); font-size: 0.9rem; font-style: italic; }
 .method-grid h3 { margin: 37px 0 12px; font-family: var(--serif); font-size: 2rem; }
 .method-grid p { max-width: 300px; margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
-.verdict-scale { display: flex; flex-wrap: wrap; gap: 7px; margin: 27px 0 0 auto; }
-.verdict-scale span { padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); background: var(--cream); font-size: 0.66rem; font-weight: 850; }
-.verdict-scale span:first-child { color: #fff; border-color: var(--rose-dark); background: var(--rose-dark); }
+.verdict-scale { position: relative; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: 27px 0 0 auto; }
+.verdict-pill {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  background: var(--cream);
+  cursor: help;
+  font-size: 0.66rem;
+  font-weight: 850;
+  line-height: 1.55;
+  transition: border-color 140ms ease, color 140ms ease;
+}
+.verdict-pill:hover, .verdict-pill:focus-visible { border-color: var(--ink); color: var(--ink); }
+.verdict-pill:first-of-type { color: #fff; border-color: var(--rose-dark); background: var(--rose-dark); }
+.verdict-pill:first-of-type:hover, .verdict-pill:first-of-type:focus-visible { border-color: var(--ink); color: #fff; }
+.verdict-hint { margin-left: 6px; color: var(--ink-soft); font-size: 0.72rem; font-style: italic; }
+/* One tooltip per grade. Each opens under the whole row, lined up with its left edge, so it can
+   never run off a narrow screen. The transparent top border bridges the gap from pill to tooltip,
+   so the pointer can move onto it without closing it. */
+.verdict-tip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: min(360px, 100%);
+  padding: 12px 14px;
+  border-top: 8px solid transparent;
+  border-radius: 14px;
+  background: var(--ink) padding-box;
+  box-shadow: var(--shadow);
+  color: rgba(255, 248, 234, 0.86);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 0s linear 140ms;
+}
+.verdict-tip strong { color: var(--lemon); font-weight: 800; }
+.verdict-pill:hover + .verdict-tip,
+.verdict-pill:focus + .verdict-tip,
+.verdict-tip:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 140ms ease, transform 140ms ease, visibility 0s;
+}
+.verdict-scale.tips-closed .verdict-tip { opacity: 0; visibility: hidden; }
 .method-note { max-width: 760px; margin: 14px 0 0 auto; color: var(--ink-soft); font-size: 0.88rem; }
 
 .cabinet-section { background: linear-gradient(to bottom, var(--paper) 0, var(--cream) var(--fade-depth), var(--cream) 100%); }
@@ -636,6 +681,7 @@ select option, select optgroup { color: #191117; background: #fff; }
   .method-grid article + article { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
   .method-grid h3 { margin-top: 15px; }
   .method-note { margin-left: 0; }
+  .verdict-hint { flex-basis: 100%; margin: 2px 0 0; }
   .flavour-grid { grid-template-columns: repeat(2, 1fr); }
   .flavour-card { min-height: 215px; padding: 15px; }
   .flavour-card h3 { font-size: 1.2rem; }

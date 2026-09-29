@@ -19,8 +19,8 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles.css?v=8">
-  <script src="app.js?v=4" defer></script>
+  <link rel="stylesheet" href="styles.css?v=9">
+  <script src="app.js?v=5" defer></script>
   <script src="hero.js?v=1" defer></script>
 </head>
 <body>
@@ -181,8 +181,18 @@
           <p>Acid, fruit, bitterness, salt, or roast keeps cold sweetness from becoming flat and tiring.</p>
         </article>
       </div>
-      <div class="verdict-scale" aria-label="Combination verdict scale">
-        <span>Exceptional</span><span>Excellent</span><span>Strong</span><span>Good</span><span>Adventurous</span>
+      <div class="verdict-scale" role="group" aria-label="Combination verdict scale">
+        <button type="button" class="verdict-pill" aria-describedby="verdict-exceptional">Exceptional</button>
+        <span class="verdict-tip" role="tooltip" id="verdict-exceptional"><strong>Roughly the top 10%</strong> of the guide's own suggestions. For the current cabinet and pairing style, every flavour's four best matches form a reference set; a cup in the top tenth of that set is Exceptional. Pairs and trios are graded separately.</span>
+        <button type="button" class="verdict-pill" aria-describedby="verdict-excellent">Excellent</button>
+        <span class="verdict-tip" role="tooltip" id="verdict-excellent"><strong>The top 10-35%</strong> of that same reference set: among the best cups the cabinet can make, just short of the very top.</span>
+        <button type="button" class="verdict-pill" aria-describedby="verdict-strong">Strong</button>
+        <span class="verdict-tip" role="tooltip" id="verdict-strong"><strong>The top 35-70%</strong> of the reference set: a well-matched cup, though this flavour has better partners in the cabinet.</span>
+        <button type="button" class="verdict-pill" aria-describedby="verdict-good">Good</button>
+        <span class="verdict-tip" role="tooltip" id="verdict-good"><strong>Above the middle</strong> of every pair or trio the current cabinet could make, but below most of the guide's own suggestions.</span>
+        <button type="button" class="verdict-pill" aria-describedby="verdict-adventurous">Adventurous</button>
+        <span class="verdict-tip" role="tooltip" id="verdict-adventurous"><strong>Below the middle</strong> of every pair or trio the cabinet could make. The flavours share fewer affinities or compete for the same job; it can still work if you like the combination.</span>
+        <span class="verdict-hint" aria-hidden="true">Hover or tap a grade to see how it is worked out</span>
       </div>
       <p class="method-note">Every pair and trio uses the same five-step verdict scale. The engine weighs classic flavour affinities, shared aromas, richness, acidity, bitterness, and texture. Verdicts are graded against the best cups the current cabinet can make, so Exceptional is kept for roughly the top tenth of our own suggestions, and Adventurous means less conventional than most possible cups. It treats a pairing as sensory judgement, not mathematical fact.</p>
     </section>

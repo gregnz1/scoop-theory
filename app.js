@@ -939,6 +939,20 @@
     return String(value).replace(/[&<>'"]/g, character => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"})[character]);
   }
 
+  // Escape closes a grade tooltip in the method section, whether it was opened by hover or focus.
+  function attachVerdictTips() {
+    const scale = document.querySelector(".verdict-scale");
+    if (!scale) return;
+    document.addEventListener("keydown", event => {
+      if (event.key !== "Escape") return;
+      scale.classList.add("tips-closed");
+      if (scale.contains(document.activeElement)) document.activeElement.blur();
+    });
+    const reopen = () => scale.classList.remove("tips-closed");
+    scale.addEventListener("pointerleave", reopen);
+    scale.addEventListener("focusin", reopen);
+  }
+
   function attachEvents() {
     elements.modeButtons.forEach(button => button.addEventListener("click", () => {
       state.mode = button.dataset.mode;
@@ -1000,6 +1014,7 @@
       readUrlState();
       if (!state.anchorId) state.anchorId = DEFAULT_ANCHORS.find(id => flavourById.has(id)) || flavours[0]?.id || "";
       attachEvents();
+      attachVerdictTips();
       renderMode();
       renderCabinet();
       warmVerdicts();
