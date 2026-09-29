@@ -9,6 +9,8 @@ name: Refresh specials
 on:
   schedule:
     - cron: "17 19 * * 0"   # Mondays 5:17 am Brisbane (Sunday 19:17 UTC)
+  push:
+    branches: [automation/weekly-specials]   # TEMPORARY: test run before merging; removed in the next commit
   workflow_dispatch:
     inputs:
       dry_run:
