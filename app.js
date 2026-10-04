@@ -69,6 +69,8 @@
   const hash = text => [...text].reduce((value, character) => ((value << 5) - value + character.charCodeAt(0)) | 0, 0);
   const prettyDate = value => new Intl.DateTimeFormat("en-AU", {day: "numeric", month: "short", year: "numeric"}).format(new Date(`${value}T12:00:00Z`));
   const cleanName = value => value.replace(/^★\s*/, "");
+  const flavourDescription = flavour => flavour?.description || flavour?.note || "";
+  const flavourSensory = flavour => flavour?.sensory || flavour?.note || flavourDescription(flavour);
 
   function cacheElements() {
     [
@@ -218,7 +220,7 @@
   function renderSelectedFlavourNote(element, flavour) {
     if (!element) return;
     element.hidden = !flavour;
-    element.textContent = flavour ? flavour.note : "";
+    element.textContent = flavour ? flavourSensory(flavour) : "";
   }
 
   function syncBuilder() {
@@ -758,7 +760,7 @@
       <div>
         <p class="mini-label">${anchor.kind === "special" ? "Current special" : anchor.format}</p>
         <h3>${escapeHtml(anchor.name)}</h3>
-        <p>${escapeHtml(anchor.note)}</p>
+        <p>${escapeHtml(flavourSensory(anchor))}</p>
       </div>`;
   }
 
@@ -859,7 +861,7 @@
   function renderCabinet() {
     const query = state.cabinetQuery.trim().toLowerCase();
     const visible = flavours.filter(flavour => {
-      const searchMatch = !query || `${flavour.name} ${flavour.note} ${flavour.tags.join(" ")}`.toLowerCase().includes(query);
+      const searchMatch = !query || `${flavour.name} ${flavourDescription(flavour)} ${flavourSensory(flavour)} ${flavour.tags.join(" ")}`.toLowerCase().includes(query);
       const filterMatch = state.cabinetFilter === "all"
         || (state.cabinetFilter === "special" && flavour.kind === "special")
         || (state.cabinetFilter === "sorbet" && isSorbet(flavour))
@@ -874,13 +876,17 @@
     const button = document.createElement("button");
     button.type = "button";
     button.className = `flavour-card flavour-border-${flavour.family}`;
-    button.setAttribute("aria-label", `Start with ${flavour.name}. ${flavour.note}`);
+    button.setAttribute("aria-label", `Start with ${flavour.name}. ${flavourDescription(flavour)} ${flavourSensory(flavour)}`);
     button.innerHTML = `
       <span class="flavour-badges">
         ${flavour.kind === "special" ? '<span class="flavour-badge special">Current special</span>' : '<span class="flavour-badge">Classic</span>'}
         <span class="flavour-badge">${escapeHtml(flavour.format)}</span>
       </span>
-      <span><h3>${escapeHtml(flavour.name)}</h3><p>${escapeHtml(flavour.note)}</p></span>
+      <span>
+        <h3>${escapeHtml(flavour.name)}</h3>
+        <p class="flavour-description"><strong>What's in it:</strong> ${escapeHtml(flavourDescription(flavour))}</p>
+        <p class="flavour-sensory"><strong>Scoop Theory:</strong> ${escapeHtml(flavourSensory(flavour))}</p>
+      </span>
       <span class="make-anchor">Pair this flavour</span>`;
     button.addEventListener("click", () => {
       setAnchor(flavour.id);
