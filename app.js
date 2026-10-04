@@ -74,6 +74,7 @@
     [
       "rotation-label", "flavour-count", "special-count", "checked-date", "hero-random",
       "anchor-select", "second-select", "third-select", "third-field", "second-role-name", "second-role-help", "builder-hint", "clear-cup",
+      "mode-advisory", "anchor-note", "second-note", "third-note",
       "random-anchor", "style-options", "anchor-summary", "results-title",
       "recommendations", "shuffle-results", "cabinet-search", "cabinet-filters", "flavour-grid",
       "no-flavour-results", "toast"
@@ -214,6 +215,12 @@
     return ids.filter(Boolean).map(id => flavourById.get(id)).filter(Boolean);
   }
 
+  function renderSelectedFlavourNote(element, flavour) {
+    if (!element) return;
+    element.hidden = !flavour;
+    element.textContent = flavour ? flavour.note : "";
+  }
+
   function syncBuilder() {
     rebuildPartnerSelects();
     elements["third-field"].hidden = state.mode !== "3";
@@ -225,6 +232,10 @@
     elements["second-select"].disabled = !state.anchorId;
     elements["third-select"].disabled = !state.secondId;
     elements["clear-cup"].disabled = !state.secondId && !state.thirdId;
+    elements["mode-advisory"].hidden = state.mode !== "3";
+    renderSelectedFlavourNote(elements["anchor-note"], flavourById.get(state.anchorId));
+    renderSelectedFlavourNote(elements["second-note"], flavourById.get(state.secondId));
+    renderSelectedFlavourNote(elements["third-note"], state.mode === "3" ? flavourById.get(state.thirdId) : null);
     if (!state.secondId) {
       elements["builder-hint"].textContent = state.mode === "3"
         ? "Leave both slots open for complete cup ideas, or choose a bridge to get feedback and ranked lifts."
@@ -412,9 +423,11 @@
     return band === -1 ? "Adventurous" : VERDICT_BANDS[band][0];
   }
 
-  function deterministicJitter(id) {
-    if (!state.shuffleSeed) return 0;
-    return (Math.abs(hash(`${id}-${state.shuffleSeed}`)) % 700) / 100;
+  function recommendationPage(ranked, count = 4, poolSize = 12) {
+    const pool = ranked.slice(0, Math.min(poolSize, ranked.length));
+    if (!pool.length) return [];
+    const start = state.shuffleSeed ? (state.shuffleSeed * count) % pool.length : 0;
+    return Array.from({length: Math.min(count, pool.length)}, (_, index) => pool[(start + index) % pool.length]);
   }
 
   function twoScoopRecommendations(anchor) {
@@ -428,10 +441,10 @@
         verdictScore: uncappedPairScore(anchor, flavour, style),
         reason: pairReason(anchor, flavour)
       }))
-      .sort((a, b) => (b.score + deterministicJitter(b.flavours[1].id)) - (a.score + deterministicJitter(a.flavours[1].id)) || b.verdictScore - a.verdictScore);
+      .sort((a, b) => b.score - a.score || b.verdictScore - a.verdictScore);
 
     ranked = promotePreferred(ranked);
-    return ranked.slice(0, 4);
+    return recommendationPage(ranked);
   }
 
   function triadPassesMode(cup, style) {
@@ -502,18 +515,18 @@
         });
       }
     }
-    ranked.sort((a, b) => (b.score + deterministicJitter(b.flavours.map(item => item.id).join("-"))) - (a.score + deterministicJitter(a.flavours.map(item => item.id).join("-"))));
+    ranked.sort((a, b) => b.score - a.score);
     const promoted = promotePreferred(ranked);
     const chosen = [];
     const appearances = new Map();
     for (const result of promoted) {
       const partners = result.flavours.filter(flavour => flavour.id !== anchor.id);
-      if (partners.some(flavour => (appearances.get(flavour.id) || 0) >= 2) && chosen.length >= 2) continue;
+      if (partners.some(flavour => (appearances.get(flavour.id) || 0) >= 3) && chosen.length >= 4) continue;
       chosen.push(result);
       partners.forEach(flavour => appearances.set(flavour.id, (appearances.get(flavour.id) || 0) + 1));
-      if (chosen.length === 4) break;
+      if (chosen.length === 12) break;
     }
-    return chosen;
+    return recommendationPage(chosen);
   }
 
   function promotePreferred(ranked) {
@@ -531,11 +544,29 @@
       const role = partner.profile.brightness < 3 && sharedSpecificTags(cup[0], partner).length ? "bridge" : "lift";
       return [{flavour: cup[0], role: "anchor"}, {flavour: partner, role}];
     }
+    const partners = cup.slice(1);
+    const lift = [...partners].sort((a, b) => liftValue(b) - liftValue(a))[0];
+    const bridge = partners.find(flavour => flavour.id !== lift.id) || partners[0];
     return [
       {flavour: cup[0], role: "anchor"},
-      {flavour: cup[1], role: "bridge"},
-      {flavour: cup[2], role: "lift"}
+      {flavour: bridge, role: "bridge"},
+      {flavour: lift, role: "lift"}
     ];
+  }
+
+  function servingOrder(cup) {
+    if (cup.length !== 3) return null;
+    const roles = assignRoles(cup);
+    const anchor = roles.find(item => item.role === "anchor").flavour;
+    const bridge = roles.find(item => item.role === "bridge").flavour;
+    const lift = roles.find(item => item.role === "lift").flavour;
+    return {bottom: bridge, middle: lift, top: anchor};
+  }
+
+  function servingOrderHtml(cup) {
+    const order = servingOrder(cup);
+    if (!order) return "";
+    return `<p class="serving-order"><strong>Stack it:</strong> ask for ${escapeHtml(order.bottom.name)} first (bottom) → ${escapeHtml(order.middle.name)} (middle) → ${escapeHtml(order.top.name)} (top).</p>`;
   }
 
   function liftValue(flavour) {
@@ -646,6 +677,7 @@
       <h4>${escapeHtml(cup.map(flavour => flavour.name).join(" + "))}</h4>
       <p class="assessment-verdict">${escapeHtml(label)}</p>
       <p class="reason">${escapeHtml(reason)}</p>
+      ${servingOrderHtml(cup)}
       <ul class="feedback-list">${feedbackNotes(cup, style).map(note => `<li>${escapeHtml(note)}</li>`).join("")}</ul>
       <div class="role-row">${roles.map(item => `<span class="role-tag">${escapeHtml(item.flavour.name)} - ${item.role}</span>`).join("")}</div>`;
 
@@ -734,6 +766,7 @@
     const anchor = flavourById.get(state.anchorId);
     if (!anchor) {
       elements["shuffle-results"].disabled = true;
+      elements["shuffle-results"].hidden = true;
       elements["results-title"].textContent = "Your combinations will appear here.";
       elements.recommendations.innerHTML = `<div class="results-empty"><div class="mini-stack" aria-hidden="true"><i></i><i></i><i></i></div><p>Pick a first scoop to see the strongest current pairings.</p></div>`;
       return;
@@ -742,6 +775,7 @@
     const second = flavourById.get(state.secondId);
     const third = flavourById.get(state.thirdId);
     elements["shuffle-results"].disabled = Boolean(second);
+    elements["shuffle-results"].hidden = Boolean(second);
     if (second) {
       const pair = [anchor, second];
       if (state.mode === "3" && third) {
@@ -769,6 +803,8 @@
       return;
     }
 
+    elements["shuffle-results"].hidden = false;
+    elements["shuffle-results"].disabled = false;
     const recommendations = state.mode === "2" ? twoScoopRecommendations(anchor) : threeScoopRecommendations(anchor);
     const styleName = STYLE_OPTIONS[state.mode].find(option => option.id === state.styles[state.mode])?.label.toLowerCase();
     elements["results-title"].textContent = `${state.mode === "2" ? "Two-scoop" : "Three-scoop"} ${styleName} picks for ${anchor.name}.`;
@@ -797,6 +833,7 @@
       <p class="recommendation-rank">${escapeHtml(prefix + verdict)}</p>
       <h4>${escapeHtml(names)}</h4>
       <p class="reason">${escapeHtml(result.reason)}</p>
+      ${servingOrderHtml(result.flavours)}
       <div class="role-row">${roles.map(item => `<span class="role-tag">${escapeHtml(item.flavour.name)} - ${item.role}</span>`).join("")}</div>`;
 
     const actions = document.createElement("div");
