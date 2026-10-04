@@ -17,7 +17,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "nut",
-      "note": "Milk-chocolate hazelnut gelato piled with cone crunch, hazelnut fudge and roasted hazelnut.",
       "colour": "#9b684c",
       "profile": {
         "richness": 5,
@@ -52,7 +51,9 @@
           "id": "passionfruit",
           "why": "High-acid tropical fruit is the strongest contrast to this very rich scoop."
         }
-      ]
+      ],
+      "description": "Milk-chocolate hazelnut gelato piled with cone crunch, hazelnut fudge and roasted hazelnut.",
+      "sensory": "Very rich, sweet and roasty; hazelnut and milk chocolate dominate, with cone crunch adding texture. Needs acid, bitterness or fresh fruit beside it."
     },
     {
       "id": "daddy-chill",
@@ -61,7 +62,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "custard",
-      "note": "Rum-and-raisin custard-tart gelato with buttery shortcrust.",
       "colour": "#b98263",
       "profile": {
         "richness": 4,
@@ -96,7 +96,9 @@
           "id": "chocolate-fondant",
           "why": "Dark cocoa deepens the warm rum and pastry notes."
         }
-      ]
+      ],
+      "description": "Rum-and-raisin custard-tart gelato with buttery shortcrust.",
+      "sensory": "Custardy and boozy with warm raisin and buttery pastry; rounded rather than bright. Coffee, dark chocolate or citrus keeps it from feeling heavy."
     },
     {
       "id": "drop-it-like-white-choc",
@@ -105,7 +107,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "custard",
-      "note": "Salted caramelised white chocolate with extra caramelised white-chocolate chip.",
       "colour": "#d8af78",
       "profile": {
         "richness": 5,
@@ -138,7 +139,9 @@
           "id": "blood-orange",
           "why": "Bitter citrus resets the long caramelised-white-chocolate finish."
         }
-      ]
+      ],
+      "description": "Salted caramelised white chocolate with extra caramelised white-chocolate chip.",
+      "sensory": "Dense caramelised white chocolate, very sweet and low-acid, with salt doing most of the balancing. Best with something sharply fruity or bitter."
     },
     {
       "id": "dulce-de-coco",
@@ -147,7 +150,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "tropical",
-      "note": "Coconut dulce de leche with desiccated coconut and dark-chocolate chips.",
       "colour": "#c99869",
       "profile": {
         "richness": 5,
@@ -181,7 +183,9 @@
           "id": "blood-orange",
           "why": "Bitter citrus is the hardest reset for the dulce and chocolate."
         }
-      ]
+      ],
+      "description": "Coconut dulce de leche with desiccated coconut and dark-chocolate chips.",
+      "sensory": "Lush coconut-caramel sweetness with dark-chocolate punctuation; tropical but still very rich. Passionfruit, citrus or coffee gives it a cleaner finish."
     },
     {
       "id": "fior-di-fragola",
@@ -190,7 +194,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "bright",
-      "note": "Fior di latte with Marsala and strawberry puree - creamy berry with a light wine note.",
       "colour": "#eaa0a2",
       "profile": {
         "richness": 3,
@@ -225,7 +228,9 @@
           "id": "vanilla",
           "why": "A simple milk-and-vanilla bridge keeps the strawberry legible."
         }
-      ]
+      ],
+      "description": "Fior di latte with Marsala and strawberry puree - creamy berry with a light wine note.",
+      "sensory": "Soft milky strawberry with gentle acidity and a light Marsala perfume; medium-rich and unusually versatile. Excellent as a bridge between fruit and richer scoops."
     },
     {
       "id": "just-like-a-milkshake",
@@ -234,7 +239,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "bakery",
-      "note": "Coco Pops milk gelato with crunchy Coco Pop clusters.",
       "colour": "#aa765c",
       "profile": {
         "richness": 4,
@@ -268,7 +272,9 @@
           "id": "hazelnut",
           "why": "Roasted hazelnut makes the cocoa-cereal profile feel deliberate rather than merely sweet."
         }
-      ]
+      ],
+      "description": "Coco Pops milk gelato with crunchy Coco Pop clusters.",
+      "sensory": "Milky, cocoa-cereal and crunchy, with nostalgic malted-chocolate energy. Sweet and low-acid, so fruit or coffee gives it definition."
     },
     {
       "id": "mitchos-milo-tart",
@@ -277,7 +283,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "bakery",
-      "note": "Milo custard gelato with shortcrust - malty chocolate custard in tart form.",
       "colour": "#9f7157",
       "profile": {
         "richness": 5,
@@ -312,7 +317,9 @@
           "id": "chocolate-sorbet",
           "why": "Lean dark cocoa deepens Milo without adding more dairy weight."
         }
-      ]
+      ],
+      "description": "Milo custard gelato with shortcrust - malty chocolate custard in tart form.",
+      "sensory": "Malty cocoa custard with buttery pastry; dense, roasty and dessert-like. Benefits from acidity, berry fruit or a cleaner dark-chocolate partner."
     },
     {
       "id": "mr-potato-head",
@@ -321,7 +328,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "nut",
-      "note": "Peanut-butter gelato with white-chocolate-covered potato chips - salty, nutty and crunchy.",
       "colour": "#c59662",
       "profile": {
         "richness": 5,
@@ -357,7 +363,9 @@
           "id": "blood-orange",
           "why": "Bitter citrus is a decisive reset after salty peanut and white chocolate."
         }
-      ]
+      ],
+      "description": "Peanut-butter gelato with white-chocolate-covered potato chips - salty, nutty and crunchy.",
+      "sensory": "Rich peanut butter, salty potato-chip crunch and sweet white chocolate; dense, nutty and low-acid. Needs brightness or bitterness beside it."
     },
     {
       "id": "robert-brownie-jnr",
@@ -366,7 +374,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "chocolate",
-      "note": "Milk-chocolate gelato loaded with chocolate brownie and chocolate fudge.",
       "colour": "#754838",
       "profile": {
         "richness": 5,
@@ -400,7 +407,9 @@
           "id": "strawberry",
           "why": "Fresh berry gives rich milk chocolate a lighter dessert contrast."
         }
-      ]
+      ],
+      "description": "Milk-chocolate gelato loaded with chocolate brownie and chocolate fudge.",
+      "sensory": "Deeply chocolatey, fudgy and cake-rich with very little lift. Best treated as the anchor and paired with fruit, coffee or a clean sorbet."
     },
     {
       "id": "spill-the-tea",
@@ -409,7 +418,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "custard",
-      "note": "Hong Kong milk-tea gelato with brown-sugar caramel and baked cheesecake.",
       "colour": "#b68668",
       "profile": {
         "richness": 5,
@@ -444,7 +452,9 @@
           "id": "vanilla",
           "why": "A quiet dairy partner lets the tea remain the dominant aroma."
         }
-      ]
+      ],
+      "description": "Hong Kong milk-tea gelato with brown-sugar caramel and baked cheesecake.",
+      "sensory": "Milky tea, brown sugar and baked cheesecake make a fragrant but very rich scoop. Citrus or tart fruit helps the tea stay legible."
     },
     {
       "id": "the-don",
@@ -453,7 +463,6 @@
       "kind": "special",
       "format": "gelato",
       "family": "bakery",
-      "note": "Salted-caramel gelato with whipped cream, chocolate chips and pretzel crunch.",
       "colour": "#c18750",
       "profile": {
         "richness": 5,
@@ -488,7 +497,9 @@
           "id": "chocolate-sorbet",
           "why": "Lean dark cocoa deepens the chocolate and pretzel without adding more cream."
         }
-      ]
+      ],
+      "description": "Salted-caramel gelato with whipped cream, chocolate chips and pretzel crunch.",
+      "sensory": "Salted caramel, cream, chocolate and pretzel make this sweet, salty and crunchy but heavy. Coffee, berry or citrus provides the reset."
     }
   ]
 }
