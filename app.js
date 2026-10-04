@@ -220,7 +220,7 @@
   function renderSelectedFlavourNote(element, flavour) {
     if (!element) return;
     element.hidden = !flavour;
-    element.textContent = flavour ? flavourSensory(flavour) : "";
+    element.textContent = flavour ? `Scoop Theory: ${flavourSensory(flavour)}` : "";
   }
 
   function syncBuilder() {
