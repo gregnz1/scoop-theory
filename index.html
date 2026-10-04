@@ -90,6 +90,7 @@
             <button type="button" class="segment is-active" data-mode="2" aria-pressed="true">Two scoops</button>
             <button type="button" class="segment" data-mode="3" aria-pressed="false">Three scoops</button>
           </fieldset>
+          <p class="mode-advisory" id="mode-advisory" hidden><strong>Three scoops is a huge serve.</strong> Best for sharing or a deliberately big dessert. We will also tell you the best stack order.</p>
 
           <div class="field-group">
             <div class="field-label-row">
@@ -99,6 +100,7 @@
             <select id="anchor-select" name="anchor">
               <option value="">Choose a flavour</option>
             </select>
+            <p class="selected-flavour-note" id="anchor-note" hidden></p>
           </div>
 
           <div class="field-group">
@@ -108,6 +110,7 @@
             <select id="second-select" name="second">
               <option value="">Recommend one for me</option>
             </select>
+            <p class="selected-flavour-note" id="second-note" hidden></p>
           </div>
 
           <div class="field-group" id="third-field" hidden>
@@ -117,6 +120,7 @@
             <select id="third-select" name="third">
               <option value="">Recommend one for me</option>
             </select>
+            <p class="selected-flavour-note" id="third-note" hidden></p>
           </div>
 
           <div class="builder-helper">
@@ -145,8 +149,9 @@
               <p class="eyebrow">Best matches</p>
               <h3 id="results-title">Your combinations will appear here.</h3>
             </div>
-            <button class="icon-button" id="shuffle-results" type="button" aria-label="Shuffle recommendations" title="Shuffle recommendations" disabled>
+            <button class="more-picks-button" id="shuffle-results" type="button" aria-label="Show another set of recommendations" title="Show another set of recommendations" disabled>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+              <span>More picks</span>
             </button>
           </div>
           <div id="recommendations" class="recommendations" aria-live="polite">
