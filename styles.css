@@ -702,3 +702,66 @@ select option, select optgroup { color: #191117; background: #fff; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
+
+
+/* Practical tasting guidance */
+.mode-advisory {
+  margin: -20px 0 28px;
+  padding: 12px 14px;
+  border: 1px solid rgba(243, 212, 106, 0.34);
+  border-radius: 14px;
+  color: rgba(255, 248, 234, 0.76);
+  background: rgba(243, 212, 106, 0.08);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+.mode-advisory strong { color: var(--lemon); }
+.mode-advisory[hidden] { display: none; }
+
+.selected-flavour-note {
+  margin: 8px 3px 0;
+  color: rgba(255, 248, 234, 0.58);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+.selected-flavour-note[hidden] { display: none; }
+
+.more-picks-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--paper);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+.more-picks-button svg {
+  width: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+.more-picks-button:hover { color: #fff; border-color: var(--rose-dark); background: var(--rose-dark); }
+.more-picks-button:disabled { cursor: default; opacity: 0.35; }
+.more-picks-button[hidden] { display: none; }
+
+.serving-order {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  border-left: 3px solid var(--rose);
+  border-radius: 0 9px 9px 0;
+  color: var(--ink-soft);
+  background: rgba(215, 66, 103, 0.06);
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+.serving-order strong { color: var(--ink); }
