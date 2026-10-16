@@ -17,11 +17,11 @@
       "kind": "special",
       "format": "gelato",
       "family": "chocolate",
-      "description": "Gelato with vanilla malt gelato, chocolate malt mud cake and chocolate fudge.",
-      "sensory": "A current gelato profiled around fudge, vanilla and cream.",
+      "description": "Vanilla malt gelato with chocolate malt mud cake and chocolate fudge.",
+      "sensory": "Malty, fudgy and cakey - a dense chocolate dessert in a scoop that wants something sharp or roasty beside it.",
       "colour": "#8b5a49",
       "profile": {
-        "richness": 4,
+        "richness": 5,
         "brightness": 0,
         "sweetness": 4,
         "roast": 3
@@ -29,15 +29,29 @@
       "tags": [
         "chocolate",
         "fudge",
-        "vanilla",
-        "cream",
-        "biscuit",
-        "cake",
         "malt",
+        "cake",
+        "vanilla",
         "creamy"
       ],
-      "pairs": [],
-      "needsReview": true
+      "pairs": [
+        {
+          "id": "strawberry",
+          "why": "Fresh berry cuts through the mud cake like a choc-dipped strawberry."
+        },
+        {
+          "id": "coffee",
+          "why": "Espresso bitterness turns the malt and fudge into a mocha."
+        },
+        {
+          "id": "blood-orange",
+          "why": "Bitter orange and chocolate cake - a jaffa reset for a dense scoop."
+        },
+        {
+          "id": "passionfruit",
+          "why": "Tart passionfruit keeps a very rich scoop from getting heavy."
+        }
+      ]
     },
     {
       "id": "choc-hazelnut-crunch",
@@ -46,93 +60,9 @@
       "kind": "special",
       "format": "gelato",
       "family": "nut",
-      "description": "Gelato with messinatella gelato, hazelnut topping and cone crunch.",
-      "sensory": "A current gelato profiled around hazelnut and crunch.",
+      "description": "Messinatella gelato with hazelnut topping and cone crunch.",
+      "sensory": "Roasted hazelnut and milk chocolate with a waffle-cone crunch - rich and toasty, so it loves bitter or tart company.",
       "colour": "#c8ad78",
-      "profile": {
-        "richness": 3,
-        "brightness": 0,
-        "sweetness": 3,
-        "roast": 3
-      },
-      "tags": [
-        "chocolate",
-        "hazelnut",
-        "crunch",
-        "nut",
-        "creamy"
-      ],
-      "pairs": [],
-      "needsReview": true
-    },
-    {
-      "id": "foxy-cleopatra",
-      "sourceSlug": "foxy-cleopatra",
-      "name": "Foxy Cleopatra",
-      "kind": "special",
-      "format": "gelato",
-      "family": "tropical",
-      "description": "Gelato with yoghurt gelato, coconut gelato and mango salsa.",
-      "sensory": "A current gelato profiled around cream, yoghurt and coconut.",
-      "colour": "#efb04f",
-      "profile": {
-        "richness": 3,
-        "brightness": 3,
-        "sweetness": 3,
-        "roast": 0
-      },
-      "tags": [
-        "cream",
-        "yoghurt",
-        "coconut",
-        "mango",
-        "fruit",
-        "tropical",
-        "creamy"
-      ],
-      "pairs": [],
-      "needsReview": true
-    },
-    {
-      "id": "gooey",
-      "sourceSlug": "gooey",
-      "name": "Gooey",
-      "kind": "special",
-      "format": "gelato",
-      "family": "nut",
-      "description": "Gelato with peanut butter gelato, white chocolate peanut fudge and peanut praline.",
-      "sensory": "A current gelato profiled around white chocolate, fudge and caramel.",
-      "colour": "#c8ad78",
-      "profile": {
-        "richness": 5,
-        "brightness": 0,
-        "sweetness": 5,
-        "roast": 3
-      },
-      "tags": [
-        "white chocolate",
-        "chocolate",
-        "fudge",
-        "caramel",
-        "peanut",
-        "praline",
-        "crunch",
-        "nut",
-        "creamy"
-      ],
-      "pairs": [],
-      "needsReview": true
-    },
-    {
-      "id": "have-a-gay-old-time",
-      "sourceSlug": "have-a-gay-old-time",
-      "name": "Have A Gay Old Time",
-      "kind": "special",
-      "format": "gelato",
-      "family": "chocolate",
-      "description": "Gelato with caramel gelato, milk gelato and chocolate covered biscuit crumbs.",
-      "sensory": "A current gelato profiled around caramel, cream and boozy.",
-      "colour": "#8b5a49",
       "profile": {
         "richness": 4,
         "brightness": 0,
@@ -141,14 +71,159 @@
       },
       "tags": [
         "chocolate",
-        "caramel",
-        "cream",
-        "biscuit",
-        "boozy",
+        "hazelnut",
+        "nut",
+        "waffle",
+        "roast",
         "creamy"
       ],
-      "pairs": [],
-      "needsReview": true
+      "pairs": [
+        {
+          "id": "coffee",
+          "why": "Espresso and hazelnut - the classic Italian bar pairing."
+        },
+        {
+          "id": "blood-orange",
+          "why": "Bitter orange gives choc-hazelnut a clean, jaffa-style edge."
+        },
+        {
+          "id": "strawberry",
+          "why": "Fresh berry brightens the roasted nut and chocolate."
+        },
+        {
+          "id": "cone-ception",
+          "why": "Double down on the waffle-cone crunch."
+        }
+      ]
+    },
+    {
+      "id": "foxy-cleopatra",
+      "sourceSlug": "foxy-cleopatra",
+      "name": "Foxy Cleopatra",
+      "kind": "special",
+      "format": "gelato",
+      "family": "tropical",
+      "description": "Yoghurt and coconut gelato with mango salsa.",
+      "sensory": "Tangy yoghurt and soft coconut with juicy mango - a light, tropical scoop that bridges sorbets and richer gelato.",
+      "colour": "#efb04f",
+      "profile": {
+        "richness": 3,
+        "brightness": 3,
+        "sweetness": 3,
+        "roast": 0
+      },
+      "tags": [
+        "mango",
+        "coconut",
+        "yoghurt",
+        "tropical",
+        "fruit",
+        "creamy"
+      ],
+      "pairs": [
+        {
+          "id": "passionfruit",
+          "why": "Passionfruit sharpens the mango into a full tropical cup."
+        },
+        {
+          "id": "macadamia-crunch",
+          "why": "Buttery macadamia gives the fruit something rich to lean on."
+        },
+        {
+          "id": "coconut-lychee",
+          "why": "Coconut on coconut, with lychee adding a floral lift."
+        },
+        {
+          "id": "boysenberry",
+          "why": "Two tangy yoghurt scoops - one berry, one tropical."
+        }
+      ]
+    },
+    {
+      "id": "gooey",
+      "sourceSlug": "gooey",
+      "name": "Gooey",
+      "kind": "special",
+      "format": "gelato",
+      "family": "nut",
+      "description": "Peanut butter gelato with white chocolate peanut fudge and peanut praline.",
+      "sensory": "Salty-sweet peanut butter, fudgy and crunchy; very rich, so it needs a sharp fruit or bitter partner.",
+      "colour": "#c8ad78",
+      "profile": {
+        "richness": 5,
+        "brightness": 0,
+        "sweetness": 5,
+        "roast": 3
+      },
+      "tags": [
+        "peanut",
+        "nut",
+        "praline",
+        "white chocolate",
+        "fudge",
+        "salt",
+        "creamy"
+      ],
+      "pairs": [
+        {
+          "id": "strawberry",
+          "why": "Peanut butter and berry - the PB&J cup."
+        },
+        {
+          "id": "chocolate-fondant",
+          "why": "Dark chocolate bitterness reins in the sweetness."
+        },
+        {
+          "id": "coffee",
+          "why": "Roast meets roasted peanut, and the bitterness checks the fudge."
+        },
+        {
+          "id": "boysenberry",
+          "why": "Tangy berry yoghurt for a creamier PB&J."
+        }
+      ]
+    },
+    {
+      "id": "have-a-gay-old-time",
+      "sourceSlug": "have-a-gay-old-time",
+      "name": "Have a Gay Old Time",
+      "kind": "special",
+      "format": "gelato",
+      "family": "custard",
+      "description": "Caramel and milk gelato with chocolate-coated biscuit crumbs.",
+      "sensory": "Soft caramel and milky cream with chocolate biscuit crunch - sweet and comforting, best with a bitter or tart partner.",
+      "colour": "#dda869",
+      "profile": {
+        "richness": 4,
+        "brightness": 0,
+        "sweetness": 5,
+        "roast": 1
+      },
+      "tags": [
+        "caramel",
+        "milk",
+        "chocolate",
+        "biscuit",
+        "creamy"
+      ],
+      "pairs": [
+        {
+          "id": "coffee",
+          "why": "Espresso turns caramel and biscuit into an affogato."
+        },
+        {
+          "id": "passionfruit",
+          "why": "Passionfruit's tang cuts the caramel sweetness."
+        },
+        {
+          "id": "cookies-cream",
+          "why": "Shares the chocolate-biscuit crunch for a cosy double."
+        },
+        {
+          "id": "blood-orange",
+          "why": "Bitter orange and caramel - a sharp, marmalade-style lift."
+        }
+      ]
     },
     {
       "id": "leche-al-passion",
@@ -157,51 +232,84 @@
       "kind": "special",
       "format": "gelato",
       "family": "tropical",
-      "description": "Gelato with passionfruit gelato and dulce de leche.",
-      "sensory": "A current gelato profiled around caramel, dulce de leche and passionfruit.",
+      "description": "Passionfruit gelato with dulce de leche.",
+      "sensory": "Tart passionfruit rippled with milky caramel - sweet and sour at once, like a passionfruit caramel slice.",
       "colour": "#efb04f",
       "profile": {
-        "richness": 5,
-        "brightness": 5,
-        "sweetness": 5,
-        "roast": 0
-      },
-      "tags": [
-        "caramel",
-        "dulce de leche",
-        "passionfruit",
-        "fruit",
-        "tropical",
-        "creamy"
-      ],
-      "pairs": [],
-      "needsReview": true
-    },
-    {
-      "id": "mr-messina-xxl",
-      "sourceSlug": "mr-messina-xxl",
-      "name": "Mr. Messina Xxl",
-      "kind": "special",
-      "format": "gelato",
-      "family": "chocolate",
-      "description": "Gelato with fior di latte gelato, baked cheesecake, pretzel crust and pretzel fudge.",
-      "sensory": "A current gelato profiled around fudge, cheesecake and cake.",
-      "colour": "#8b5a49",
-      "profile": {
-        "richness": 5,
-        "brightness": 0,
+        "richness": 4,
+        "brightness": 4,
         "sweetness": 4,
         "roast": 0
       },
       "tags": [
-        "fudge",
-        "cheesecake",
-        "biscuit",
-        "cake",
+        "passionfruit",
+        "tropical",
+        "fruit",
+        "dulce de leche",
+        "caramel",
         "creamy"
       ],
-      "pairs": [],
-      "needsReview": true
+      "pairs": [
+        {
+          "id": "chocolate-fondant",
+          "why": "Dark chocolate and passionfruit is a pastry-kitchen classic."
+        },
+        {
+          "id": "coconut-lychee",
+          "why": "Coconut softens the tang into a full tropical cup."
+        },
+        {
+          "id": "mango",
+          "why": "Mango sorbet keeps it fruity and light."
+        },
+        {
+          "id": "super-dulce",
+          "why": "Doubles the caramel for a richer, rounder cup."
+        }
+      ]
+    },
+    {
+      "id": "mr-messina-xxl",
+      "sourceSlug": "mr-messina-xxl",
+      "name": "Mr. Messina XXL",
+      "kind": "special",
+      "format": "gelato",
+      "family": "custard",
+      "description": "Fior di latte gelato with baked cheesecake, pretzel crust and pretzel fudge.",
+      "sensory": "Creamy cheesecake with a salty pretzel crunch - rich, tangy-sweet and a little savoury; fruit is its best friend.",
+      "colour": "#dda869",
+      "profile": {
+        "richness": 5,
+        "brightness": 1,
+        "sweetness": 4,
+        "roast": 1
+      },
+      "tags": [
+        "cheesecake",
+        "milk",
+        "biscuit",
+        "salt",
+        "fudge",
+        "creamy"
+      ],
+      "pairs": [
+        {
+          "id": "strawberry",
+          "why": "Berry on cheesecake - the obvious topping, in sorbet form."
+        },
+        {
+          "id": "salted-caramel",
+          "why": "Salted caramel picks up the pretzel's salty-sweet edge."
+        },
+        {
+          "id": "passionfruit",
+          "why": "Passionfruit cheesecake, with tang to cut the richness."
+        },
+        {
+          "id": "blood-orange",
+          "why": "Bitter orange keeps a big cheesecake scoop from tiring."
+        }
+      ]
     },
     {
       "id": "nicpic",
@@ -209,27 +317,42 @@
       "name": "Nicpic",
       "kind": "special",
       "format": "gelato",
-      "family": "nut",
-      "description": "Gelato with milk chocolate gelato, rice crisp, peanuts, wafer and caramel.",
-      "sensory": "A current gelato profiled around milk chocolate, caramel and peanut.",
-      "colour": "#c8ad78",
+      "family": "chocolate",
+      "description": "Milk chocolate gelato with rice crisp, peanuts, wafer and caramel.",
+      "sensory": "A chocolate-bar scoop: milk chocolate, caramel and salty peanut with plenty of crunch; very sweet, so give it acid or roast.",
+      "colour": "#8b5a49",
       "profile": {
         "richness": 5,
         "brightness": 0,
-        "sweetness": 4,
-        "roast": 3
+        "sweetness": 5,
+        "roast": 2
       },
       "tags": [
         "milk chocolate",
         "chocolate",
-        "caramel",
         "peanut",
-        "biscuit",
         "nut",
+        "caramel",
         "creamy"
       ],
-      "pairs": [],
-      "needsReview": true
+      "pairs": [
+        {
+          "id": "coffee",
+          "why": "Espresso bitterness tames the chocolate-bar sweetness."
+        },
+        {
+          "id": "strawberry",
+          "why": "Bright berry with peanut and chocolate - a fresh PB&J turn."
+        },
+        {
+          "id": "passionfruit",
+          "why": "Sharp passionfruit cuts straight through the caramel."
+        },
+        {
+          "id": "milk-choc-peanut",
+          "why": "Peanut and milk chocolate twice over, for the committed."
+        }
+      ]
     },
     {
       "id": "red-velvet-2-0",
@@ -237,27 +360,42 @@
       "name": "Red Velvet 2.0",
       "kind": "special",
       "format": "gelato",
-      "family": "chocolate",
-      "description": "Gelato with baked cheesecake gelato, red velvet cake and crushed red velvet fudge.",
-      "sensory": "A current gelato profiled around fudge, cheesecake and cream.",
-      "colour": "#8b5a49",
+      "family": "bakery",
+      "description": "Baked cheesecake gelato with red velvet cake and crushed red velvet fudge.",
+      "sensory": "Tangy cream-cheese gelato with soft cocoa cake and fudge - rich and gently chocolatey, lovely beside berries.",
+      "colour": "#c68e6c",
       "profile": {
         "richness": 5,
-        "brightness": 0,
+        "brightness": 1,
         "sweetness": 4,
-        "roast": 3
+        "roast": 1
       },
       "tags": [
+        "cheesecake",
+        "cake",
+        "cocoa",
         "chocolate",
         "fudge",
-        "cheesecake",
-        "cream",
-        "biscuit",
-        "cake",
         "creamy"
       ],
-      "pairs": [],
-      "needsReview": true
+      "pairs": [
+        {
+          "id": "strawberry",
+          "why": "Berry and cream cheese - the natural red velvet topping."
+        },
+        {
+          "id": "chocolate-fondant",
+          "why": "Deeper chocolate fills out the light cocoa of the cake."
+        },
+        {
+          "id": "lemon",
+          "why": "Lemon-cheesecake vibes, and a sharp reset."
+        },
+        {
+          "id": "boysenberry",
+          "why": "Tangy berry yoghurt echoes the cream-cheese tang."
+        }
+      ]
     },
     {
       "id": "tres-leches-v-2",
@@ -266,21 +404,40 @@
       "kind": "special",
       "format": "gelato",
       "family": "custard",
-      "description": "Gelato with milk gelato, milk soaked sponge and milk jam.",
-      "sensory": "A current gelato profiled around cream.",
+      "description": "Milk gelato with milk-soaked sponge and milk jam.",
+      "sensory": "Milky, soft and caramel-sweet with soaked-cake texture - gentle and creamy, so it shines next to fruit or coffee.",
       "colour": "#dda869",
       "profile": {
-        "richness": 3,
+        "richness": 4,
         "brightness": 0,
-        "sweetness": 3,
-        "roast": 0
+        "sweetness": 4,
+        "roast": 1
       },
       "tags": [
-        "cream",
+        "milk",
+        "cake",
+        "dulce de leche",
+        "caramel",
         "creamy"
       ],
-      "pairs": [],
-      "needsReview": true
+      "pairs": [
+        {
+          "id": "coffee",
+          "why": "Milk and espresso - a cafe con leche in two scoops."
+        },
+        {
+          "id": "mango",
+          "why": "Mango and tres leches is a Latin American favourite."
+        },
+        {
+          "id": "strawberry",
+          "why": "Strawberries on milk cake, fresh and light."
+        },
+        {
+          "id": "leche-al-passion",
+          "why": "Shared milk jam, with passionfruit adding tang."
+        }
+      ]
     }
   ]
 }
