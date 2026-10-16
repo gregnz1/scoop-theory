@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 FAMILIES = {"bright", "tropical", "chocolate", "nut", "custard", "bakery"}
 FORMATS = {"gelato", "sorbet", "yoghurt gelato", "sherbet gelato"}
 PROFILE_KEYS = ("richness", "brightness", "sweetness", "roast")
-REQUIRED = ("id", "name", "kind", "format", "family", "note", "colour", "profile", "tags", "pairs")
+REQUIRED = ("id", "name", "kind", "format", "family", "description", "sensory", "colour", "profile", "tags", "pairs")
 
 
 def main() -> int:
@@ -55,11 +55,15 @@ def main() -> int:
         tags = item.get("tags")
         if not isinstance(tags, list) or not tags or not all(isinstance(t, str) and t == t.lower() for t in tags):
             errors.append(f"{label}: tags should be a non-empty list of lower-case words")
-        note = str(item.get("note", ""))
-        if not 10 <= len(note) <= 220:
-            errors.append(f"{label}: note should be one sentence (10-220 characters)")
-        if "–" in note or "—" in note:
-            errors.append(f"{label}: use a hyphen (-), not an en or em dash")
+        description = str(item.get("description", ""))
+        if "description" in item and not 10 <= len(description) <= 160:
+            errors.append(f"{label}: description should be one short factual line (10-160 characters)")
+        sensory = str(item.get("sensory", ""))
+        if "sensory" in item and not 10 <= len(sensory) <= 240:
+            errors.append(f"{label}: sensory note should be one or two sentences (10-240 characters)")
+        copy = [description, sensory] + [str(pair.get("why", "")) for pair in item.get("pairs") or []]
+        if any("–" in text or "—" in text for text in copy):
+            errors.append(f"{label}: use a spaced hyphen (-), not an en or em dash")
         for pair in item.get("pairs") or []:
             if pair.get("id") == item.get("id"):
                 errors.append(f"{label}: pairs with itself")

@@ -3,7 +3,7 @@
 Independent, unofficial flavour-pairing guide for Gelato Messina, live at https://scoops.drtarr.com.
 Static site on GitHub Pages from `main` of `gregnz1/scoop-theory`; merging to `main` publishes within a few minutes.
 
-- Never use Messina logos, product photos or their description text. Flavour names, dates and stated components are fine; notes and pairing reasons are our own words.
+- Never use Messina logos, product photos or their description text. Flavour names, dates and stated components are fine; sensory notes and pairing reasons are our own words.
 - House style: Australian spelling; a spaced hyphen ( - ) instead of en or em dashes.
 - `app.js` holds the pairing engine. Don't change scoring or ranking unless asked.
 - Artwork comes from `scripts/draw_art.py` (it also writes the hero into `index.html` between the `hero-art` markers); PNGs from `scripts/render_png.py`.
@@ -24,7 +24,8 @@ For each entry in `data/specials.json` with `"needsReview": true`, using `.githu
 - **format**: `gelato`, `sorbet` or `yoghurt gelato`.
 - **family**: `bright` (fruit and tang), `tropical`, `chocolate` (chocolate and roast), `nut` (nut and praline), `custard` (custard and caramel) or `bakery` (biscuit and crunch). Pick the flavour's dominant character.
 - **colour**: the family colour - bright `#e86d68`, tropical `#efb04f`, chocolate `#8b5a49`, nut `#c8ad78`, custard `#dda869`, bakery `#c68e6c`.
-- **note**: one sentence, under 200 characters, saying what it tastes like in our own words. Naming components is fine; paraphrasing Messina's blurb is not. Example: "Fior di latte with Marsala and strawberry puree - creamy berry with a light wine note."
+- **description**: one short factual line (under 160 characters) naming what's in it - base and stated components only, no tasting words. Never Messina's blurb or a paraphrase of it. Example: "Fior di latte gelato with Marsala and strawberry puree."
+- **sensory**: one or two sentences (under 240 characters) in our own words on how it tastes and what it needs beside it. Example: "Creamy berry with a light wine note; sweet rather than sharp, so it likes a citrus lift."
 - **profile**: whole numbers 0-5 for richness, brightness (acidity and fresh fruit), sweetness and roast (bitterness and toast). Calibrate against the classics:
 
   | Flavour | Format | Family | Richness | Brightness | Sweetness | Roast |
@@ -51,5 +52,5 @@ Then:
 1. Where a continuing special's `pairs` name a flavour that has just left the cabinet, replace it with a current partner.
 2. Delete `.github/specials-report.json`.
 3. Run `python3 scripts/check_data.py --strict`. It must pass with no errors.
-4. Commit as "Write up <rotation label>", push to the same branch, and comment on the pull request: one line per new flavour with its family, note and partners.
+4. Commit as "Write up <rotation label>", push to the same branch, and comment on the pull request: one line per new flavour with its family, sensory note and partners.
 5. Don't merge; Greg does that.

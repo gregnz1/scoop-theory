@@ -287,6 +287,16 @@ def format_name(item: dict) -> str:
     return "gelato"
 
 
+def stated_description(item: dict, format_value: str) -> str:
+    """A factual placeholder built from the stated components only (never Messina's blurb)."""
+    parts = [part.strip() for part in (item.get("bases") or []) + (item.get("additions") or []) if part.strip()]
+    if not parts:
+        return f"A current {format_value} special."
+    listed = ", ".join(parts[:-1]) + (" and " if len(parts) > 1 else "") + parts[-1]
+    text = f"{format_value.capitalize()} with {listed.lower()}."
+    return text if len(text) <= 160 else text[:156].rsplit(" ", 1)[0] + "..."
+
+
 def derived_note(tags: list[str], format_value: str) -> str:
     preferred = [
         tag for tag in tags
@@ -329,7 +339,8 @@ def build_entry(item: dict, old: dict | None, used_ids: set[str]) -> dict:
         "kind": "special",
         "format": format_value,
         "family": family,
-        "note": derived_note(tags, format_value),
+        "description": stated_description(item, format_value),
+        "sensory": derived_note(tags, format_value),
         "colour": COLOURS[family],
         "profile": derive_profile(tags, format_value),
         "tags": tags,
