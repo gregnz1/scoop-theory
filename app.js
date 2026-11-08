@@ -68,6 +68,16 @@
   const clamp = (number, min, max) => Math.min(max, Math.max(min, number));
   const hash = text => [...text].reduce((value, character) => ((value << 5) - value + character.charCodeAt(0)) | 0, 0);
   const prettyDate = value => new Intl.DateTimeFormat("en-AU", {day: "numeric", month: "short", year: "numeric"}).format(new Date(`${value}T12:00:00Z`));
+  const shortDate = value => prettyDate(value).replace(/ \d{4}$/, "");
+  // "3 Nov - 1 Dec" for the current rotation, or "" when its dates aren't known.
+  const rotationDates = () => rotation?.from && rotation?.to
+    ? `${shortDate(rotation.from)} - ${shortDate(rotation.to)}`
+    : "";
+  // Once the listed end date has passed and the new specials aren't in yet, don't promise a
+  // date that's already gone.
+  const rotationLapsed = () => Boolean(rotation?.to)
+    && new Intl.DateTimeFormat("en-CA", {timeZone: "Australia/Sydney"}).format(new Date()) > rotation.to;
+  const specialBadge = () => rotation?.to && !rotationLapsed() ? `Special until ${shortDate(rotation.to)}` : "Current special";
   const cleanName = value => value.replace(/^★\s*/, "");
   const flavourDescription = flavour => flavour?.description || flavour?.note || "";
   const flavourSensory = flavour => flavour?.sensory || flavour?.note || flavourDescription(flavour);
@@ -130,14 +140,13 @@
     elements["flavour-count"].textContent = String(flavours.length);
     elements["special-count"].textContent = String(specials.length);
     elements["checked-date"].textContent = prettyDate(data.specials.source.checkedAt);
-    const end = rotation?.to ? prettyDate(rotation.to).replace(/ \d{4}$/, "") : "the next rotation";
-    // Once the listed end date has passed and the new specials aren't in yet, don't promise a
-    // date that's already gone; say when the list was last updated instead.
-    const today = new Intl.DateTimeFormat("en-CA", {timeZone: "Australia/Sydney"}).format(new Date());
-    const lapsed = rotation?.to && today > rotation.to;
-    elements["rotation-label"].textContent = lapsed
+    const end = rotation?.to ? shortDate(rotation.to) : "the next rotation";
+    // After the end date, say when the list was last updated instead.
+    elements["rotation-label"].textContent = rotationLapsed()
       ? `Specials last updated ${prettyDate(data.specials.source.checkedAt)} - new ones coming soon`
-      : `${rotation?.label || "Current specials"} - in cabinet until ${end}`;
+      : rotationDates()
+        ? `${rotation.label || "Current specials"}: ${rotationDates()}`
+        : `${rotation?.label || "Current specials"} - in cabinet until ${end}`;
   }
 
   function flavourOption(flavour, text = "") {
@@ -758,7 +767,7 @@
     elements["anchor-summary"].innerHTML = `
       <div class="summary-scoop flavour-colour-${escapeHtml(anchor.family)}" aria-hidden="true"></div>
       <div>
-        <p class="mini-label">${anchor.kind === "special" ? "Current special" : anchor.format}</p>
+        <p class="mini-label">${anchor.kind === "special" ? escapeHtml(specialBadge()) : anchor.format}</p>
         <h3>${escapeHtml(anchor.name)}</h3>
         <p>${escapeHtml(flavourSensory(anchor))}</p>
       </div>`;
@@ -879,7 +888,7 @@
     button.setAttribute("aria-label", `Start with ${flavour.name}. ${flavourDescription(flavour)} ${flavourSensory(flavour)}`);
     button.innerHTML = `
       <span class="flavour-badges">
-        ${flavour.kind === "special" ? '<span class="flavour-badge special">Current special</span>' : '<span class="flavour-badge">Classic</span>'}
+        ${flavour.kind === "special" ? `<span class="flavour-badge special">${escapeHtml(specialBadge())}</span>` : '<span class="flavour-badge">Classic</span>'}
         <span class="flavour-badge">${escapeHtml(flavour.format)}</span>
       </span>
       <span>
